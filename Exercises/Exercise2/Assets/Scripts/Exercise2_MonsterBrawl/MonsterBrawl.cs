@@ -39,15 +39,49 @@ public class MonsterBrawl : MonoBehaviour
         int[] speedStats = { 1, 2, 3, 1, 4 };
 
         // YOUR CODE GOES HERE
-        PrintRoster(monsterNames, attackStats, healthStats, speedStats); // Prints the Roster, passes in Monsters' info
+        Monster[] monsters = new Monster[monsterNames.Length]; // declares an array of the Monster class to hold the roster's monsters
+        // loops through this monsters array to populate each monster's fields using the names & stats arrays
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            // break out of the loop if there is a missing stat for a monster
+            if (i == attackStats.Length || i == healthStats.Length || i == speedStats.Length)
+            {
+                Debug.Log("Missing a stat for: " + monsterNames[i]);
+                break;
+            }
+
+            monsters[i] = new Monster(); // instantiates the Monster object to allow access
+            monsters[i].name = monsterNames[i]; // stores the corresponding monster's name
+            monsters[i].atk = attackStats[i]; // stores that monster's atk
+            monsters[i].hp = healthStats[i]; // stores that monster's health
+            monsters[i].spd = speedStats[i]; // stores that monster's speed
+        }
+
+        PrintRoster(monsters); // Prints the Roster, passes in the array of Monsters
+
+        FightSim(monsters);
     }
 
-    // Loops through the monsters and prints each one in the instructed format
-    void PrintRoster(string[] names, int[] attacks, int[] healths, int[] speeds)
+    // Loops through the monsters and prints each one's info in the instructed format
+    void PrintRoster(Monster[] monsters)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < monsters.Length; i++)
         {
-            Debug.Log(names[i] + " | ATK: " + attacks[i] + " | HP: " + healths[i] + " | SPD: " + speeds[i]);
+            Debug.Log(monsters[i].name + " | ATK: " + monsters[i].atk + " | HP: " + monsters[i].hp + " | SPD: " + monsters[i].spd);
         }
+    }
+
+    void FightSim(Monster[] monsters)
+    {
+
+    }
+
+    // Declares a Monster class to hold all the monster info from the roster & facilitate fight sim
+    public class Monster
+    {
+        public string name;
+        public int atk;
+        public int hp;
+        public int spd;
     }
 }
