@@ -9,6 +9,6 @@ public class RotatePropeller : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Rotate(Vector3.forward * SPEED * Time.deltaTime); // rotates the propeller along the x-axis at constant speed
+        transform.Rotate(Vector3.forward * SPEED * Time.deltaTime); // rotates the propeller along the z-axis at constant speed
     }
 }
