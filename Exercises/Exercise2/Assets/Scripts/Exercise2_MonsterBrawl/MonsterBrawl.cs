@@ -1,18 +1,18 @@
 /*
  * Assignment: Monster Brawl
- * 
+ *
  * Objective:
- * Implement a battle simulation in the Start method. You are given five monsters, each with a name, attack stat, health stat and speed stat. 
+ * Implement a battle simulation in the Start method. You are given five monsters, each with a name, attack stat, health stat and speed stat.
  *      Attack determines how much damage it does when it attacks. Health determines how much damage it can take before dying.
  *      Speed determines how often a monster attacks (1 means it attacks every turn, 2 means every 2 turns, 3 means every 3 turns, and so on)
- *  
+ *
  *  Print the roster
  *      1. Loop through the monsters and print each one in this exact format:
  *      Goblin | ATK: 8 | HP: 30 | SPD: 1
- *  
+ *
  *  Simulate every unique 1v1 fight
  *      1. Every monster should fight every other monster exactly once.
- *          Goblin vs Orc and Orc vs Goblin are the same fight — only one should occur.
+ *          Goblin vs Orc and Orc vs Goblin are the same fight ï¿½ only one should occur.
  *      2. A monster should never fight itself.
  *      3. In each fight, both monsters attack simultaneously each turn.
  *      4. A monster only attacks on turns that are a multiple of its speed.
@@ -39,6 +39,15 @@ public class MonsterBrawl : MonoBehaviour
         int[] speedStats = { 1, 2, 3, 1, 4 };
 
         // YOUR CODE GOES HERE
+        PrintRoster(monsterNames, attackStats, healthStats, speedStats); // Prints the Roster, passes in Monsters' info
+    }
+
+    // Loops through the monsters and prints each one in the instructed format
+    void PrintRoster(string[] names, int[] attacks, int[] healths, int[] speeds)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            Debug.Log(names[i] + " | ATK: " + attacks[i] + " | HP: " + healths[i] + " | SPD: " + speeds[i]);
+        }
     }
 }
-
