@@ -62,12 +62,12 @@ public class MonsterBrawl : MonoBehaviour
         FightSim(monsters);
     }
 
-    // Loops through the monsters and prints each one's info in the instructed format
+    // Loops through the monsters array and prints each one's info in the instructed format
     void PrintRoster(Monster[] monsters)
     {
-        for (int i = 0; i < monsters.Length; i++)
+        foreach (Monster monster in monsters)
         {
-            Debug.Log(monsters[i].name + " | ATK: " + monsters[i].atk + " | HP: " + monsters[i].hp + " | SPD: " + monsters[i].spd);
+            Debug.Log(monster.name + " | ATK: " + monster.atk + " | HP: " + monster.hp + " | SPD: " + monster.spd);
         }
     }
 
