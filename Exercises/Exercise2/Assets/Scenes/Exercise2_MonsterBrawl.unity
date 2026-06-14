@@ -148,6 +148,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1dd3246afad18447a2fc5876cadf4eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterBrawl
+  monsters:
+  - Name: Goblin
+    AttackStat: 8
+    HealthPoints: 30
+    SpeedStat: 1
+  - Name: Orc
+    AttackStat: 20
+    HealthPoints: 80
+    SpeedStat: 2
+  - Name: Troll
+    AttackStat: 35
+    HealthPoints: 200
+    SpeedStat: 3
+  - Name: Skeleton
+    AttackStat: 12
+    HealthPoints: 50
+    SpeedStat: 1
+  - Name: Ogre
+    AttackStat: 50
+    HealthPoints: 250
+    SpeedStat: 4
 --- !u!4 &609585496
 Transform:
   m_ObjectHideFlags: 0

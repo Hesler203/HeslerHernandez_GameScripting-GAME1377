@@ -31,57 +31,44 @@ using UnityEngine;
 
 public class MonsterBrawl : MonoBehaviour
 {
+    // Used to create the roster & facilitate fight sim
+    [System.Serializable]
+    public struct Monster
+    {
+        public string Name;
+        public int AttackStat;
+        public int HealthPoints;
+        public int SpeedStat;
+    }
+
+    // Will hold the roster
+    [SerializeField] private Monster[] monsters;
+
     void Start()
     {
-        string[] monsterNames = { "Goblin", "Orc", "Troll", "Skeleton", "Ogre" };
-        int[] attackStats = { 8, 20, 35, 12, 50 };
-        int[] healthStats = { 30, 80, 200, 50, 250 };
-        int[] speedStats = { 1, 2, 3, 1, 4 };
-
-        // YOUR CODE GOES HERE
-        Monster[] monsters = new Monster[monsterNames.Length]; // declares an array of the Monster class to hold the roster's monsters
-        // loops through this monsters array to populate each monster's fields using the names & stats arrays
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            // break out of the loop if there is a missing stat for a monster
-            if (i == attackStats.Length || i == healthStats.Length || i == speedStats.Length)
-            {
-                Debug.Log("Missing a stat for: " + monsterNames[i]);
-                break;
-            }
-
-            monsters[i] = new Monster(); // instantiates the Monster object to allow access
-            monsters[i].name = monsterNames[i]; // stores the corresponding monster's name
-            monsters[i].atk = attackStats[i]; // stores that monster's atk
-            monsters[i].hp = healthStats[i]; // stores that monster's health
-            monsters[i].spd = speedStats[i]; // stores that monster's speed
-        }
+        // -for me
+        //string[] monsterNames = { "Goblin", "Orc", "Troll", "Skeleton", "Ogre"  };
+        //   int[]  attackStats = {      8,      20,     35,        12,      50   };
+        //   int[]  healthStats = {     30,      80,    200,        50,     250   };
+        //   int[]   speedStats = {      1,       2,      3,         1,       4   };
 
         PrintRoster(monsters); // Prints the Roster, passes in the array of Monsters
 
         FightSim(monsters);
     }
 
+    // -for me
     // Loops through the monsters array and prints each one's info in the instructed format
     void PrintRoster(Monster[] monsters)
     {
         foreach (Monster monster in monsters)
         {
-            Debug.Log(monster.name + " | ATK: " + monster.atk + " | HP: " + monster.hp + " | SPD: " + monster.spd);
+            Debug.Log(monster.Name + " | ATK: " + monster.AttackStat + " | HP: " + monster.HealthPoints + " | SPD: " + monster.SpeedStat);
         }
     }
 
     void FightSim(Monster[] monsters)
     {
 
-    }
-
-    // Declares a Monster class to hold all the monster info from the roster & facilitate fight sim
-    public class Monster
-    {
-        public string name;
-        public int atk;
-        public int hp;
-        public int spd;
     }
 }
