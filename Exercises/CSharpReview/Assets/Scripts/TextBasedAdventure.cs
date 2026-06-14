@@ -2,6 +2,19 @@ using UnityEngine;
 
 public class TextBasedAdventure : MonoBehaviour
 {
+    [System.Serializable]
+    public struct Room
+    {
+        public string Name;
+        public TileType Type;
+    }
+
+    [System.Serializable]
+    public struct RoomRow
+    {
+        public Room[] rooms;
+    }
+
     public enum TileType
     {
         Invalid,
@@ -11,15 +24,19 @@ public class TextBasedAdventure : MonoBehaviour
         Exit,
     }
 
-    private string[,] tileNames = { { "Dark Cave"   /* 0,0 */,  "Mossy Tunnel" /* 0,1 */,   "Crystal Room" /* 0,2 */ },
-                                    { "Bone Chamber"/* 1,0 */,  "Flooded Hall" /* 1,1 */,   "Iron Gate"              },
-                                    { "Goblin Den",             "Armory",                   "Throne Room"            }
-                                    };
+    public RoomRow[] dungeon;
 
-    private TileType[,] tileTypes = {   { TileType.Empty, TileType.Item,  TileType.Empty},
-                                        { TileType.Enemy, TileType.Empty, TileType.Exit },
-                                        { TileType.Empty, TileType.Enemy, TileType.Item }
-                                    };
+    private string[,] tileNames =
+        {   { "Dark Cave"   /* 0,0 */,  "Mossy Tunnel" /* 0,1 */,   "Crystal Room" /* 0,2 */ },
+            { "Bone Chamber"/* 1,0 */,  "Flooded Hall" /* 1,1 */,   "Iron Gate"              },
+            { "Goblin Den",             "Armory",                   "Throne Room"            }
+        };
+
+    private TileType[,] tileTypes =
+        {   { TileType.Empty, TileType.Item,  TileType.Empty},
+            { TileType.Enemy, TileType.Empty, TileType.Exit },
+            { TileType.Empty, TileType.Enemy, TileType.Item }
+        };
 
     private int playerRow = 0;
     private int playerCol = 0;

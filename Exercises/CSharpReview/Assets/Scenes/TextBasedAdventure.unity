@@ -148,6 +148,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dee616297792a42bd8fcb72d9aa3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextBasedAdventure
+  dungeon:
+  - rooms:
+    - Name: Dark Cave
+      Type: 1
+    - Name: Mossy Tunnel
+      Type: 2
+    - Name: Crystal Room
+      Type: 1
+    - Name: '-'
+      Type: 0
+  - rooms:
+    - Name: Bone Chamber
+      Type: 3
+    - Name: Flooded Hall
+      Type: 1
+    - Name: Iron Gate
+      Type: 4
+    - Name: '-'
+      Type: 0
+  - rooms:
+    - Name: Goblin Den
+      Type: 1
+    - Name: Armory
+      Type: 3
+    - Name: Throne Room
+      Type: 2
+    - Name: '-'
+      Type: 0
 --- !u!4 &462066196
 Transform:
   m_ObjectHideFlags: 0
