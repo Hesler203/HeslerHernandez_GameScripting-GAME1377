@@ -108,7 +108,7 @@ public class MonsterBrawl : MonoBehaviour
                 fightLog.FighterA = monsters[roundCount].Name;
                 fightLog.FighterB = monsters[i + 1].Name;
 
-                // --------------------------------------------- TODO
+                Combat();// --------------------------------------------- TODO
 
                 DisplayResults();
             }
@@ -128,5 +128,10 @@ public class MonsterBrawl : MonoBehaviour
         {
             Debug.Log(resultMessage + " Remaining HP: " + fightLog.WinnerFinalHP);
         }
+    }
+
+    void Combat() // ------------------- TODO
+    {
+
     }
 }
