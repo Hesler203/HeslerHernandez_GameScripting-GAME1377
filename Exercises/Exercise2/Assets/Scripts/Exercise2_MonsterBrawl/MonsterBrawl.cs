@@ -27,6 +27,7 @@
  *      Observe the results in the Console after hitting the Play button.
  */
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterBrawl : MonoBehaviour
@@ -100,15 +101,19 @@ public class MonsterBrawl : MonoBehaviour
         int roundCount = 0; // starts at round 0
         int turnCount;
 
-        for (int i = roundCount; i < monsters.Length; i++)
+        do
         {
-            fightLog.FighterA = monsters[i].Name;
-            fightLog.FighterB = monsters[i + 1].Name;
+            for (int i = roundCount; i < monsters.Length; i++)
+            {
+                fightLog.FighterA = monsters[roundCount].Name;
+                fightLog.FighterB = monsters[i + 1].Name;
 
-            // --------------------------------------------- TODO
+                // --------------------------------------------- TODO
 
-            DisplayResults();
-        }
+                DisplayResults();
+            }
+            roundCount++;
+        } while (roundCount < (monsters.Length - 2));
     }
 
     void DisplayResults()
