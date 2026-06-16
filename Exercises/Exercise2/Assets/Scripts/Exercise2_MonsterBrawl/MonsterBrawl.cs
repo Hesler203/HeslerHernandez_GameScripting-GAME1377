@@ -42,19 +42,18 @@ public class MonsterBrawl : MonoBehaviour
         public int SpeedStat;
     }
     // Will hold the roster
-    [SerializeField] private Monster[] monsters;
+    [SerializeField] private Monster[] roster;
 
     // Used to keep track of who wins each fight as well as fight duration (in turns), match will be displayed to console on conclusion
-    [System.Serializable]
     public struct FightLog
     {
-        public string FighterA;
-        public string FighterB;
+        public Monster FighterA;
+        public Monster FighterB;
         public string Winner;
         public int WinnerFinalHP;
         public int TotalTurns;
     }
-    [SerializeField] private FightLog fightLog;
+    private FightLog fightLog;
 
     void Start()
     {
@@ -64,16 +63,16 @@ public class MonsterBrawl : MonoBehaviour
         //   int[]  healthStats = {     30,      80,    200,        50,     250   };
         //   int[]   speedStats = {      1,       2,      3,         1,       4   };
 
-        PrintRoster(monsters); // Prints the Roster, passes in the array of Monsters
+        PrintRoster(roster); // Prints the Roster, passes in the array of monsters
 
-        FightSim(monsters);
+        FightSim(roster, fightLog);
     }
 
     // -for me
-    // Loops through the monsters array and prints each one's info in the instructed format
-    void PrintRoster(Monster[] monsters)
+    // Loops through the roster array and prints each one's info in the instructed format
+    void PrintRoster(Monster[] roster)
     {
-        foreach (Monster monster in monsters)
+        foreach (Monster monster in roster)
         {
             Debug.Log(monster.Name + " | ATK: " + monster.AttackStat + " | HP: " + monster.HealthPoints + " | SPD: " + monster.SpeedStat);
         }
@@ -83,55 +82,90 @@ public class MonsterBrawl : MonoBehaviour
      *      1.Every monster should fight every other monster exactly once.
      *          Goblin vs Orc and Orc vs Goblin are the same fight � only one should occur.
      *      2. A monster should never fight itself.
-     *      3. In each fight, both monsters attack simultaneously each turn.
+     *      3. In each fight, both roster attack simultaneously each turn.
      *      4. A monster only attacks on turns that are a multiple of its speed.
      * E.g.a monster with speed 2 attacks on turns 2, 4, 6, etc.A monster with speed 3 attacks on turns 3, 6, 9, etc.
-     *      5. The fight ends when one or both monsters reach 0 HP or below.
+     *      5. The fight ends when one or both roster reach 0 HP or below.
      *      6. Print each fight result in this exact format:
      *          Goblin vs Orc | Winner: Orc | Turns: 12 | Remaining HP: 24
-     *      7. If both monsters die on the same turn, print:
+     *      7. If both roster die on the same turn, print:
      *          Goblin vs Orc | Draw | Turns: 8
      *  Instructions:
      *      Attach the script to any active GameObject in your Unity scene.
      * Observe the results in the Console after hitting the Play button.
      */
 
-    void FightSim(Monster[] monsters)
+    void FightSim(Monster[] roster, FightLog log)
     {
         int roundCount = 0; // starts at round 0
-        int turnCount;
 
         do
         {
-            for (int i = roundCount; i < monsters.Length; i++)
+            for (int i = roundCount; i < roster.Length; i++)
             {
-                fightLog.FighterA = monsters[roundCount].Name;
-                fightLog.FighterB = monsters[i + 1].Name;
+                log.TotalTurns = 1; // taking turns from 1
 
-                Combat();// --------------------------------------------- TODO
+                log.FighterA = roster[roundCount];
+                log.FighterB = roster[i + 1];
 
-                DisplayResults();
+                DisplayResults(DeclareWinner(Combat(log)));
+
+                log = new FightLog();
             }
             roundCount++;
-        } while (roundCount < (monsters.Length - 2));
+        } while (roundCount < (roster.Length - 2));
     }
 
-    void DisplayResults()
+    FightLog Combat(FightLog log)
     {
-        string resultMessage = (fightLog.FighterA + " vs " + fightLog.FighterB + " | " + fightLog.Winner + " | Turns: " + fightLog.TotalTurns);
+        do
+        {
+            if (log.TotalTurns % log.FighterA.SpeedStat == 0)
+            {
+                log.FighterB.HealthPoints -= log.FighterA.AttackStat;
+            }
+            if (log.TotalTurns % log.FighterB.SpeedStat == 0)
+            {
+                log.FighterA.HealthPoints -= log.FighterB.AttackStat;
+            }
+            log.TotalTurns++;
+        } while (log.FighterA.HealthPoints > 0 || log.FighterB.HealthPoints > 0);
+        return log;
+    }
 
-        if (fightLog.Winner == "Draw")
+    FightLog DeclareWinner(FightLog log)
+    {
+        if (log.FighterA.HealthPoints == log.FighterB.HealthPoints)
+        {
+            log.Winner = "Draw";
+        }
+        else
+        {
+            if (log.FighterA.HealthPoints > log.FighterB.HealthPoints)
+            {
+                log.Winner = log.FighterA.Name;
+                log.WinnerFinalHP = log.FighterA.HealthPoints;
+            }
+            else
+            {
+                log.Winner = log.FighterB.Name;
+                log.WinnerFinalHP = log.FighterB.HealthPoints;
+            }
+        }
+        return log;
+    }
+
+    void DisplayResults(FightLog log)
+    {
+        string resultMessage = (log.FighterA.Name + " vs " + log.FighterB.Name + " | " + log.Winner + " | Turns: " + log.TotalTurns);
+
+        if (log.Winner == "Draw")
         {
             Debug.Log(resultMessage);
         }
         else
         {
-            Debug.Log(resultMessage + " Remaining HP: " + fightLog.WinnerFinalHP);
+            Debug.Log(resultMessage + " Remaining HP: " + log.WinnerFinalHP);
         }
-    }
-
-    void Combat() // ------------------- TODO
-    {
-
     }
 }
