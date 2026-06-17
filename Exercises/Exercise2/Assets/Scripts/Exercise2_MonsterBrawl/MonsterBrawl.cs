@@ -97,7 +97,7 @@ public class MonsterBrawl : MonoBehaviour
     {
         log.TotalTurns = 1; // taking turns from 1
 
-        do
+        while (log.FighterA.HealthPoints > 0 && log.FighterB.HealthPoints > 0)
         {
             if (log.TotalTurns % log.FighterA.SpeedStat == 0)
             {
@@ -108,7 +108,7 @@ public class MonsterBrawl : MonoBehaviour
                 log.FighterA.HealthPoints -= log.FighterB.AttackStat;
             }
             log.TotalTurns++;
-        } while (log.FighterA.HealthPoints > 0 || log.FighterB.HealthPoints > 0);
+        }
         return log;
     }
 
