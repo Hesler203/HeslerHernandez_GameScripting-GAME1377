@@ -140,19 +140,21 @@ public class MonsterBrawl : MonoBehaviour
     // to display a battle result message in the instructed format
     // corresponding to winning conditions
     //--------------summary----------------
-    // parameter: -------- <Fightlog log>
-    // local variable: --- <string resultMessage>
+    // parameter: --------- <Fightlog log>
+    // local variables: --- <string resultFighters>,<string drawMessage>,<string winnerMessage>
     void DisplayResults(FightLog log)
     {
-        string resultMessage = (log.FighterA.Name + " vs " + log.FighterB.Name + " | " + log.Winner + " | Turns: " + log.TotalTurns);
+        string resultFighters = (log.FighterA.Name + " vs " + log.FighterB.Name);
+        string drawMessage = (" | " + log.Winner + " | Turns: " + log.TotalTurns);
+        string winnerMessage = (" | Winner: " + log.Winner + " | Turns: " + log.TotalTurns + " | Remaining HP: " + log.WinnerFinalHP);
 
         if (log.Winner == "Draw")
         {
-            Debug.Log(resultMessage);
+            Debug.Log(resultFighters + drawMessage);
         }
         else
         {
-            Debug.Log(resultMessage + " | Remaining HP: " + log.WinnerFinalHP);
+            Debug.Log(resultFighters + winnerMessage);
         }
     }
 }
