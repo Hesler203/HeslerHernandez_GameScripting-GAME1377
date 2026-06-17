@@ -109,6 +109,7 @@ public class MonsterBrawl : MonoBehaviour
             }
             log.TotalTurns++;
         }
+        log.TotalTurns--; //TotalTurns was off by one due to the final while-iteration
         return log;
     }
 
