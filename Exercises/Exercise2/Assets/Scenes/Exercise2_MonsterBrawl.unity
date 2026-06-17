@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1dd3246afad18447a2fc5876cadf4eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterBrawl
-  monsters:
+  roster:
   - Name: Goblin
     AttackStat: 8
     HealthPoints: 30
