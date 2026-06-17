@@ -80,7 +80,7 @@ public class MonsterBrawl : MonoBehaviour
         for (int roundCount = 0; roundCount < (roster.Length - 1); roundCount++)
         {
             int match = 1;
-            do
+            while (match < (roster.Length - roundCount))
             {
                 log.FighterA = roster[roundCount];
                 log.FighterB = roster[roundCount + match];
@@ -89,7 +89,7 @@ public class MonsterBrawl : MonoBehaviour
                 log = new FightLog();
 
                 match++;
-            } while (match < roster.Length);
+            }
         }
     }
 
