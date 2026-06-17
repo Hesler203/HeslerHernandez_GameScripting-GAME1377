@@ -2,16 +2,6 @@ using UnityEngine;
 
 public class MonsterBrawl : MonoBehaviour
 {
-    [System.Serializable]
-    public struct Monster // Used to create the roster & facilitate fight sim
-    {
-        public string Name;
-        public int AttackStat;
-        public int HealthPoints;
-        public int SpeedStat;
-    }
-    [SerializeField] private Monster[] roster; // roster filled in the inspector
-
     // Used to keep track of who wins each fight as well as fight duration (in turns),
     // matches will be displayed to console on conclusion
     public struct FightLog
@@ -23,21 +13,30 @@ public class MonsterBrawl : MonoBehaviour
         public int TotalTurns;
     }
 
+    public struct Monster // Used to create the roster & facilitate fight sim
+    {
+        public string Name;
+        public int AttackStat;
+        public int HealthPoints;
+        public int SpeedStat;
+    }
+    private Monster[] roster = new Monster[]
+    {
+        new Monster(){Name = "Goblin", AttackStat = 8, HealthPoints = 30, SpeedStat = 1},
+        new Monster(){Name = "Orc", AttackStat = 20, HealthPoints = 80, SpeedStat = 2},
+        new Monster(){Name = "Troll", AttackStat = 35, HealthPoints = 200, SpeedStat = 3},
+        new Monster(){Name = "Skeleton", AttackStat = 12, HealthPoints = 50, SpeedStat = 1},
+        new Monster(){Name = "Ogre", AttackStat = 50, HealthPoints = 250, SpeedStat = 4},
+    };
+    private FightLog log = new FightLog();
+
     void Start()
     {
-        // -for me
-        //string[] monsterNames = { "Goblin", "Orc", "Troll", "Skeleton", "Ogre"  };
-        //   int[]  attackStats = {      8,      20,     35,        12,      50   };
-        //   int[]  healthStats = {     30,      80,    200,        50,     250   };
-        //   int[]   speedStats = {      1,       2,      3,         1,       4   };
-
-        PrintRoster(roster);
-        FightSim(roster);
+        PrintRoster();
+        FightSim();
     }
 
-    // -for me
-    // Loops through the roster array and prints each monster's info in the instructed format
-    void PrintRoster(Monster[] roster)
+    void PrintRoster()
     {
         foreach (Monster monster in roster)
         {
@@ -45,33 +44,36 @@ public class MonsterBrawl : MonoBehaviour
         }
     }
 
-    void FightSim(Monster[] roster)
+    void FightSim()
     {
-        FightLog log = new FightLog();
-        for (int roundCount = 0; roundCount < (roster.Length - 1); roundCount++)
+        // pointer to starting monster moves up with each round
+        // conditional omits the last round since end monster has no one in front to fight
+        for (int roundCount = 1; roundCount <= (roster.Length - 1); roundCount++)
         {
-            int match = 1;
-            while (match < (roster.Length - roundCount))
+            int matchCount = 1;
+            while (matchCount < (roster.Length - roundCount)) // number of matches shorten each round as pointer to starting monster moves up
             {
                 log.FighterA = roster[roundCount];
-                log.FighterB = roster[roundCount + match];
+                log.FighterB = roster[roundCount + matchCount]; // points to the monsters in front as matches continue
 
-                DisplayResults(DeclareWinner(Combat(log)));
+                Combat();
+                DeclareWinner();
+                DisplayResults();
 
                 log = new FightLog();
-                match++;
+                matchCount++;
             }
         }
     }
 
-    FightLog Combat(FightLog log)
+    void Combat()
     {
-        log.TotalTurns = 0; // taking turns from 1
+        log.TotalTurns = 0;
 
         while (log.FighterA.HealthPoints > 0 && log.FighterB.HealthPoints > 0)
         {
-            log.TotalTurns++;
-
+            ++log.TotalTurns; // taking turns from 1
+            // attacks occur only whenever the the fighters' speed stats match the turn count
             if (log.TotalTurns % log.FighterA.SpeedStat == 0)
             {
                 log.FighterB.HealthPoints -= log.FighterA.AttackStat;
@@ -81,10 +83,9 @@ public class MonsterBrawl : MonoBehaviour
                 log.FighterA.HealthPoints -= log.FighterB.AttackStat;
             }
         }
-        return log;
     }
 
-    FightLog DeclareWinner(FightLog log)
+    void DeclareWinner()
     {
         if (log.FighterA.HealthPoints == log.FighterB.HealthPoints)
         {
@@ -103,17 +104,16 @@ public class MonsterBrawl : MonoBehaviour
                 log.WinnerFinalHP = log.FighterB.HealthPoints;
             }
         }
-        return log;
     }
 
     //--------------summary----------------
     // method recieves the FightLog history previously updated by Combat()
     // to display a battle result message in the instructed format
     // corresponding to winning conditions
-    //--------------summary----------------
-    // parameter: --------- <Fightlog log>
-    // local variables: --- <string resultFighters>,<string drawMessage>,<string winnerMessage>
-    void DisplayResults(FightLog log)
+    //----------local variables------------
+    // <string resultFighters> , <string drawMessage> , <string winnerMessage>
+    // used to store the fight result messages 
+    void DisplayResults()
     {
         string resultFighters = (log.FighterA.Name + " vs " + log.FighterB.Name);
         string drawMessage = (" | " + log.Winner + " | Turns: " + log.TotalTurns);
