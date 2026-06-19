@@ -61,7 +61,7 @@ public class MonsterBrawl : MonoBehaviour
     {
         // pointer to starting monster moves up with each round
         // conditional omits the last round since end monster has no one in front to fight
-        for (int roundCount = 1; roundCount <= (roster.Length - 1); roundCount++)
+        for (int roundCount = 0; roundCount < (roster.Length - 1); roundCount++)
         {
             int matchCount = 1;
             // number of matches shorten each round as pointer to starting monster moves up
