@@ -36,14 +36,27 @@ public class MonsterBrawl : MonoBehaviour
         FightSim();
     }
 
+    //--------------summary----------------
+    // method displays to console the name & stats of each monster within the
+    // Monster[] object, roster, in the instructed format
     void PrintRoster()
     {
         foreach (Monster monster in roster)
         {
-            Debug.Log(monster.Name + " | ATK: " + monster.AttackStat + " | HP: " + monster.HealthPoints + " | SPD: " + monster.SpeedStat);
+            Debug.Log(monster.Name + " | ATK: " + monster.AttackStat +
+                        " | HP: " + monster.HealthPoints + " | SPD: " + monster.SpeedStat);
         }
     }
 
+    //--------------summary----------------
+    // method simulates a fight between the monsters in the Monster[] object, roster, by
+    // using the round & match counters to iteratively store a pair of monsters from the roster
+    // within the Fightlog object, log, calling the Combat(), DeclareWinner(), and DisplayResults()
+    // to perform the fight calculations, winner selection, and fight result displaying respectively
+    // before clearing the log for the next fight
+    //----------local variables------------
+    // <int roundCount> , <int matchCount>
+    // counters for the number of rounds & matches within each round
     void FightSim()
     {
         // pointer to starting monster moves up with each round
@@ -51,11 +64,12 @@ public class MonsterBrawl : MonoBehaviour
         for (int roundCount = 1; roundCount <= (roster.Length - 1); roundCount++)
         {
             int matchCount = 1;
-            while (matchCount < (roster.Length - roundCount)) // number of matches shorten each round as pointer to starting monster moves up
+            // number of matches shorten each round as pointer to starting monster moves up
+            while (matchCount < (roster.Length - roundCount))
             {
                 log.FighterA = roster[roundCount];
-                log.FighterB = roster[roundCount + matchCount]; // points to the monsters in front as matches continue
-
+                log.FighterB = roster[roundCount + matchCount]; // points to the following monsters
+                                                                // as matches continue
                 Combat();
                 DeclareWinner();
                 DisplayResults();
@@ -66,6 +80,10 @@ public class MonsterBrawl : MonoBehaviour
         }
     }
 
+    //--------------summary----------------
+    // method loops through the turns of a fight between both fighters in the
+    // current FightLog object, comparing their speed stats to the current turn value
+    // to determine who attacks, until one or both fighters' health drops to zero
     void Combat()
     {
         log.TotalTurns = 0;
@@ -73,7 +91,7 @@ public class MonsterBrawl : MonoBehaviour
         while (log.FighterA.HealthPoints > 0 && log.FighterB.HealthPoints > 0)
         {
             ++log.TotalTurns; // taking turns from 1
-            // attacks occur only whenever the the fighters' speed stats match the turn count
+            // attacks occur only whenever the fighters' speed stats match the turn count
             if (log.TotalTurns % log.FighterA.SpeedStat == 0)
             {
                 log.FighterB.HealthPoints -= log.FighterA.AttackStat;
@@ -85,6 +103,10 @@ public class MonsterBrawl : MonoBehaviour
         }
     }
 
+    //--------------summary----------------
+    // method uses the FightLog object previously updated by Combat()
+    // to compare each fighter's healthpoints to decide who survived/won
+    // and updates it with the winner's name & final hp
     void DeclareWinner()
     {
         if (log.FighterA.HealthPoints == log.FighterB.HealthPoints)
@@ -107,12 +129,12 @@ public class MonsterBrawl : MonoBehaviour
     }
 
     //--------------summary----------------
-    // method recieves the FightLog history previously updated by Combat()
+    // method uses the FightLog object previously updated by DeclareWinner()
     // to display a battle result message in the instructed format
-    // corresponding to winning conditions
+    // corresponding to the winning conditions
     //----------local variables------------
     // <string resultFighters> , <string drawMessage> , <string winnerMessage>
-    // used to store the fight result messages 
+    // used to store the fight result messages
     void DisplayResults()
     {
         string resultFighters = (log.FighterA.Name + " vs " + log.FighterB.Name);
