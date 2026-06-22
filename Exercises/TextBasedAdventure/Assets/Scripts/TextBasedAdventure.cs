@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class TextBasedAdventure : MonoBehaviour
 {
     [System.Serializable]
@@ -25,26 +24,32 @@ public class TextBasedAdventure : MonoBehaviour
         Exit,
     }
 
-    private Room[,] dungeon = { 
-                                {   new Room { Name = "Dark Cave",    Type = TileType.Empty},
-                                    new Room { Name = "Mossy Tunnel", Type = TileType.Item},
-                                    new Room { Name = "Crystal Room", Type = TileType.Empty} },
-                                
-                                {   new Room { Name = "Bone Chamber", Type = TileType.Enemy },
-                                    new Room { Name = "Flooded Hall", Type = TileType.Empty},
-                                    new Room { Name = "Iron Gate",    Type = TileType.Exit } }
-                              };
-    
+    private Room[,] dungeon =
+    {
+        {   new Room { Name = "Dark Cave",      Type = TileType.Empty },
+            new Room { Name = "Mossy Tunnel",   Type = TileType.Item  },
+            new Room { Name = "Crystal Room",   Type = TileType.Empty },
+            new Room { Name = "Wine Cellar",    Type = TileType.Enemy }
+        },
 
-    private string[,] tileNames = { { "Dark Cave"   /* 0,0 */,  "Mossy Tunnel" /* 0,1 */,   "Crystal Room" /* 0,2 */ },
-                                    { "Bone Chamber"/* 1,0 */,  "Flooded Hall" /* 1,1 */,   "Iron Gate"              },
-                                    { "Goblin Den",             "Armory",                   "Throne Room"            }
-                                    };
+        {   new Room { Name = "Bone Chamber",   Type = TileType.Enemy },
+            new Room { Name = "Flooded Hall",   Type = TileType.Empty },
+            new Room { Name = "Iron Gate",      Type = TileType.Exit  },
+            new Room { Name = "Sandy Beach",    Type = TileType.Enemy }
+        },
 
-    private TileType[,] tileTypes = {   { TileType.Empty, TileType.Item,  TileType.Empty},
-                                        { TileType.Enemy, TileType.Empty, TileType.Exit },
-                                        { TileType.Empty, TileType.Enemy, TileType.Item }
-                                    };
+        {   new Room { Name = "Goblin Den",     Type = TileType.Empty },
+            new Room { Name = "Armory",         Type = TileType.Enemy },
+            new Room { Name = "Throne Room",    Type = TileType.Item  },
+            new Room { Name = "Secret Passage", Type = TileType.Empty }
+        },
+
+        {   new Room { Name = "Chasm",          Type = TileType.Empty },
+            new Room { Name = "Sauna",          Type = TileType.Item  },
+            new Room { Name = "Library",        Type = TileType.Empty },
+            new Room { Name = "Temple",         Type = TileType.Enemy },
+        }
+    };
 
     private int playerRow = 0;
     private int playerCol = 0;
@@ -103,7 +108,7 @@ public class TextBasedAdventure : MonoBehaviour
     {
         PlayerTakeDamage(enemyDamage);
     }
-    
+
     private void ItemPickup()
     {
         PlayerHeal(itemHealAmount);
@@ -166,7 +171,7 @@ public class TextBasedAdventure : MonoBehaviour
         bool hasPressedKey = true;
         newRow = playerRow;
         newCol = playerCol;
-        
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             Debug.Log("You pressed " + KeyCode.D);
