@@ -7,6 +7,7 @@ public class TextBasedAdventure : MonoBehaviour
     {
         public string Name;
         public TileType Type;
+        public bool isVisited;
     }
 
     [System.Serializable]
