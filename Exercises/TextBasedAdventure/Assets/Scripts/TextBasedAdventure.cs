@@ -21,6 +21,8 @@ public class TextBasedAdventure : MonoBehaviour
         Empty,
         Item,
         Enemy,
+        Teleporter,
+        Blockade,
         Exit,
     }
 
