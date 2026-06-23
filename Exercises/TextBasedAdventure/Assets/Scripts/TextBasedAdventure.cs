@@ -150,14 +150,21 @@ public class TextBasedAdventure : MonoBehaviour
         Debug.Log("You get healed. Your health is now " + playerHealth);
     }
 
+    /// <summary>
+    /// Decreases player's health by damage amount if the player is alive, otherwise ends game
+    /// </summary>
+    /// <param name="damage"></param>
     private void PlayerTakeDamage(int damage)
     {
         playerHealth -= damage;
         Debug.Log("You get hit. Your health is now " + playerHealth);
+
         if (playerHealth <= 0)
         {
             playerHealth = 0;
             Debug.Log("You are dead");
+            Debug.Log("Please restart the game to try again");
+            Debug.Break();
         }
     }
 
