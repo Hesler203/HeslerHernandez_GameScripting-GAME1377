@@ -110,23 +110,35 @@ public class TextBasedAdventure : MonoBehaviour
 
     private void OutputTileInformation()
     {
-        Debug.Log("You are in: " + tileNames[playerRow, playerCol]);
+        Debug.Log("You are in: " + playerTile.Name);
 
-        switch (tileTypes[playerRow, playerCol])
+        if (!playerTile.WasVisited)
+        {
+            Debug.Log(playerTile.Description);
+            playerTile.WasVisited = true;
+        }
+
+        switch (playerTile.Type)
         {
             case TileType.Empty:
                 Debug.Log("There is nothing here.");
                 break;
             case TileType.Enemy:
-                Debug.Log("Oooo a spooky ghost");
+                Debug.Log("An enemy approaches!");
                 EncounterEnemy();
                 break;
             case TileType.Item:
-                Debug.Log("You see a shiny object");
+                Debug.Log("You see a shiny object.");
                 ItemPickup();
                 break;
+            case TileType.Teleporter:
+                Debug.Log("You find a teleporter. Press T to use it.");
+                break;
+            case TileType.Blockade:
+                Debug.Log("You see no way through.");
+                break;
             case TileType.Exit:
-                Debug.Log("You see a way out");
+                Debug.Log("You see a way out.");
                 break;
             default:
                 Debug.LogError("Invalid TileType");
