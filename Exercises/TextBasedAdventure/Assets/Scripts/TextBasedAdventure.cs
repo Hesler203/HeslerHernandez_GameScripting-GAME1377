@@ -54,7 +54,7 @@ public class TextBasedAdventure : MonoBehaviour
         }
     };
 
-    private string[,] tileDescriptions =
+    public string[,] tileDescriptions =
     {
         {   "No light enters here. Tread lightly.",
             "Life seems to find a way to live... even down here.",
@@ -229,4 +229,64 @@ public class TextBasedAdventure : MonoBehaviour
         return hasPressedKey;
     }
 
+    /// <summary>
+    /// Sets the player position to a new row and column position based on the dungeon's bounds
+    /// and the new tile's TileType, and let's the player know if the new tile position is inaccessible
+    /// </summary>
+    /// <param name="newRow"></param>
+    /// <param name="newCol"></param>
+    /// <returns>True if the new tile position was within the bounds & not a blockade, false if not</returns>
+    private bool SetPlayerPosition(int newRow, int newCol)
+    {
+        bool wasTileAvailable = CheckIfNewPositionInBounds(newRow, newCol);
+        if (wasTileAvailable)
+        {
+            bool wasNextTileBlockade = CheckIfNewTileIsBlockade(newRow, newCol);
+            if (wasNextTileBlockade == false)
+            {
+                playerPosition.row = newRow;
+                playerPosition.col = newCol;
+            }
+            else
+            {
+                wasTileAvailable = false;
+                Debug.Log("Can't go that way");
+            }
+        }
+        else
+        {
+            wasTileAvailable = false;
+            Debug.Log("Can't go that way");
+        }
+        return wasTileAvailable;
+    }
+
+    /// <summary>
+    /// Determine if the new row and column position are within the bounds of the tiles
+    /// </summary>
+    /// <param name="newRow"></param>
+    /// <param name="newCol"></param>
+    /// <returns>True if it is within the bounds, false if not</returns>
+    private bool CheckIfNewPositionInBounds(int newRow, int newCol)
+    {
+        return (newRow >= 0 && newRow < dungeon.GetLength(0)) && (newCol >= 0 && newCol < dungeon.GetLength(1));
+    }
+
+    /// <summary>
+    /// Determine if the potential new tile for player movement is a blockade
+    /// </summary>
+    /// <param name="newRow"></param>
+    /// <param name="newCol"></param>
+    /// <returns>True if tile is blockade, false if not</returns>
+    private bool CheckIfNewTileIsBlockade(int newRow, int newCol)
+    {
+        bool isNextTileBlockade = false;
+
+        Room nextTile = dungeon[newRow, newCol];
+        if (nextTile.Type == TileType.Blockade)
+        {
+            isNextTileBlockade = true;
+        }
+        return isNextTileBlockade;
+    }
 }
