@@ -81,19 +81,22 @@ public class TextBasedAdventure : MonoBehaviour
         },
     };
 
-    private int playerRow = 0;
-    private int playerCol = 0;
+    private Room playerTile;
+
+    private (int row, int col) playerPosition = (0, 0);
     private int playerHealth = 10;
+
     private int enemyDamage = 1;
     private int itemHealAmount = 2;
-
-    private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        InitializeRoomDescriptions();
+
+        playerTile = dungeon[playerPosition.row, playerPosition.col];
+
         OutputTileInformation();
-        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
