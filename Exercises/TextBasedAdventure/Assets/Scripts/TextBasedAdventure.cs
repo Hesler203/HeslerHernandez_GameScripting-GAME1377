@@ -99,15 +99,44 @@ public class TextBasedAdventure : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool wasKeyPressed = HandleInput(out int newRow, out int newCol);
-        if (!wasKeyPressed)
+        bool didPlayerTryMove = PlayerMovement(out int newRow, out int newCol);
+        if (didPlayerTryMove)
         {
-            return;
+            bool wasTileAvailable = SetPlayerPosition(newRow, newCol);
+            if (wasTileAvailable)
+            {
+                playerTile = dungeon[playerPosition.row, playerPosition.col];
+                OutputTileInformation();
+            }
         }
-        SetPlayerPosition(newRow, newCol);
-        OutputTileInformation();
+        else if (WasLookPressed())
+        {
+            Debug.Log(playerTile.Description);
+        }
+        else if (playerTile.Type == TileType.Teleporter && WasTeleportActivated())
+        {
+            TryTeleport();
+        }
     }
 
+    /// <summary>
+    /// Sets the room description for every room in the dungeon
+    /// </summary>
+    private void InitializeRoomDescriptions()
+    {
+        for (int row = 0; row < dungeon.GetLength(0); row++)
+        {
+            for (int col = 0; col < dungeon.GetLength(1); col++)
+            {
+                dungeon[row, col].Description = tileDescriptions[row, col];
+            }
+        }
+    }
+
+    /// <summary>
+    /// Prints to console the name, description, and tile type message of the player's current tile
+    /// The room description only appears on the player's first visit
+    /// </summary>
     private void OutputTileInformation()
     {
         Debug.Log("You are in: " + playerTile.Name);
