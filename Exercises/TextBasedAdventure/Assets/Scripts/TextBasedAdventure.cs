@@ -195,12 +195,12 @@ public class TextBasedAdventure : MonoBehaviour
     /// </summary>
     /// <param name="newRow">new row position</param>
     /// <param name="newCol">new column position</param>
-    /// <returns>True if an input was pressed, false if not</returns>
-    private bool HandleInput(out int newRow, out int newCol)
+    /// <returns>True if any move input was pressed, false if not</returns>
+    private bool PlayerMovement(out int newRow, out int newCol)
     {
-        bool hasPressedKey = true;
-        newRow = playerRow;
-        newCol = playerCol;
+        bool hasMoved = true;
+        newRow = playerPosition.row;
+        newCol = playerPosition.col;
 
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -224,9 +224,9 @@ public class TextBasedAdventure : MonoBehaviour
         }
         else
         {
-            hasPressedKey = false;
+            hasMoved = false;
         }
-        return hasPressedKey;
+        return hasMoved;
     }
 
     /// <summary>
