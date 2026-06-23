@@ -180,18 +180,105 @@ public class TextBasedAdventure : MonoBehaviour
     }
 
     /// <summary>
-    /// Determine if the new row and column position are within the bounds of the tiles
+    /// Counts the number of rooms in the dungeon that have the same Teleporter label, then validates
+    /// that this count is even, i.e. that each teleporter has a pair
     /// </summary>
-    /// <param name="newRow"></param>
-    /// <param name="newCol"></param>
-    /// <returns>True if it is within the bounds, false if not</returns>
-    private bool CheckIfNewPositionInTileBounds(int newRow, int newCol)
+    /// <returns>True if each room's Teleporter label has a match pair, false if not</returns>
+    private bool ValidateTeleporterCount()
     {
-        return (newRow >= 0 && newRow < tileNames.GetLength(0)) && (newCol >= 0 && newCol < tileNames.GetLength(1));
+        bool wasTeleporterCountValid = true;
+
+        List<string> teleporterList = new List<string>();
+
+        foreach (Room room in dungeon)
+        {
+            if (room.TeleporterLabel != null && !teleporterList.Contains(room.TeleporterLabel))
+            {
+                int labelCount = 0;
+                foreach (Room label in dungeon)
+                {
+                    if (label.TeleporterLabel == room.TeleporterLabel)
+                    {
+                        labelCount++;
+                    }
+                }
+
+                if (labelCount % 2 != 0) // not all labels have pairs
+                {
+                    return wasTeleporterCountValid = false;
+                }
+
+                teleporterList.Add(room.TeleporterLabel);
+            }
+        }
+
+        if (teleporterList.Count == 0)
+        {
+            wasTeleporterCountValid = false;
+        }
+
+        return wasTeleporterCountValid;
     }
 
     /// <summary>
-    /// Handles the player's input and sets potential new position in the tileNames array
+    /// Sets potential teleporter pair's position
+    /// </summary>
+    /// <param name="teleporterRow">teleporter pair's row position</param>
+    /// <param name="teleporterCol">teleporter pair's column position</param>
+    /// <returns>True if a corresponding teleporter pair was found, false if not</returns>
+    private bool FindTeleporterPair(out int teleporterRow, out int teleporterCol)
+    {
+        bool hasFoundTeleporterPair = false;
+
+        teleporterRow = playerPosition.row;
+        teleporterCol = playerPosition.col;
+
+        for (int row = 0; row < dungeon.GetLength(0); row++)
+        {
+            for (int col = 0; col < dungeon.GetLength(1); col++)
+            {
+                Room currentTile = playerTile;
+                Room newTile = dungeon[row, col];
+                if (newTile.TeleporterLabel == currentTile.TeleporterLabel && newTile.Name != currentTile.Name)
+                {
+                    teleporterRow = row;
+                    teleporterCol = col;
+                    hasFoundTeleporterPair = true;
+                    break;
+                }
+            }
+        }
+        return hasFoundTeleporterPair;
+    }
+
+    /// <summary>
+    /// Handles the player's teleport input
+    /// </summary>
+    /// <returns>True if Spacebar was pressed, false if not</returns>
+    private bool WasLookPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Handles the player's teleport input
+    /// </summary>
+    /// <returns>True if the T key was pressed, false if not</returns>
+    private bool WasTeleportActivated()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Handles the player's movement input and sets potential new tile position to move into
     /// </summary>
     /// <param name="newRow">new row position</param>
     /// <param name="newCol">new column position</param>
