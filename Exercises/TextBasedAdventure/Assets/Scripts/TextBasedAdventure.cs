@@ -4,7 +4,7 @@ using UnityEngine;
 public class TextBasedAdventure : MonoBehaviour
 {
     [System.Serializable]
-    public struct Room
+    public class Room
     {
         public string Name;
         public TileType Type;
