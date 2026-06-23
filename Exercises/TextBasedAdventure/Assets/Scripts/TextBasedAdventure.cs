@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TextBasedAdventure : MonoBehaviour
@@ -7,13 +8,9 @@ public class TextBasedAdventure : MonoBehaviour
     {
         public string Name;
         public TileType Type;
-        public bool isVisited;
-    }
-
-    [System.Serializable]
-    public struct RoomRow
-    {
-        public Room[] rooms;
+        public bool WasVisited;
+        public string Description;
+        public string TeleporterLabel;
     }
 
     public enum TileType
@@ -27,30 +24,30 @@ public class TextBasedAdventure : MonoBehaviour
         Exit,
     }
 
-    private Room[,] dungeon =
+    public Room[,] dungeon =
     {
-        {   new Room { Name = "Dark Cave",      Type = TileType.Empty      },
-            new Room { Name = "Mossy Tunnel",   Type = TileType.Item       },
-            new Room { Name = "Crystal Room",   Type = TileType.Teleporter },
-            new Room { Name = "Wine Cellar",    Type = TileType.Enemy      }
+        {   new Room { Name = "Dark Cave",      Type = TileType.Empty                             },
+            new Room { Name = "Mossy Tunnel",   Type = TileType.Item                              },
+            new Room { Name = "Crystal Room",   Type = TileType.Teleporter,  TeleporterLabel = "A"},
+            new Room { Name = "Wine Cellar",    Type = TileType.Enemy                             }
         },
 
-        {   new Room { Name = "Bone Chamber",   Type = TileType.Enemy      },
-            new Room { Name = "Flooded Hall",   Type = TileType.Empty      },
-            new Room { Name = "Iron Gate",      Type = TileType.Exit       },
-            new Room { Name = "Sandy Beach",    Type = TileType.Enemy      }
+        {   new Room { Name = "Bone Chamber",   Type = TileType.Enemy                             },
+            new Room { Name = "Flooded Hall",   Type = TileType.Empty                             },
+            new Room { Name = "Iron Gate",      Type = TileType.Exit                              },
+            new Room { Name = "Sandy Beach",    Type = TileType.Enemy                             }
         },
 
-        {   new Room { Name = "Goblin Den",     Type = TileType.Empty      },
-            new Room { Name = "Armory",         Type = TileType.Enemy      },
-            new Room { Name = "Throne Room",    Type = TileType.Item       },
-            new Room { Name = "Secret Passage", Type = TileType.Empty      }
+        {   new Room { Name = "Goblin Den",     Type = TileType.Empty                             },
+            new Room { Name = "Armory",         Type = TileType.Enemy                             },
+            new Room { Name = "Throne Room",    Type = TileType.Item                              },
+            new Room { Name = "Secret Passage", Type = TileType.Empty                             }
         },
 
-        {   new Room { Name = "Chasm",          Type = TileType.Blockade   },
-            new Room { Name = "Hot Spring",     Type = TileType.Item       },
-            new Room { Name = "Library",        Type = TileType.Teleporter },
-            new Room { Name = "Temple",         Type = TileType.Enemy      }
+        {   new Room { Name = "Chasm",          Type = TileType.Blockade                          },
+            new Room { Name = "Hot Spring",     Type = TileType.Item                              },
+            new Room { Name = "Library",        Type = TileType.Teleporter,  TeleporterLabel = "A"},
+            new Room { Name = "Temple",         Type = TileType.Enemy                             }
         }
     };
 
@@ -59,26 +56,26 @@ public class TextBasedAdventure : MonoBehaviour
         {   "No light enters here. Tread lightly.",
             "Life seems to find a way to live... even down here.",
             "The crystals emit a faint glow, as though they feel your presence.",
-            "These barrels are all empty. Who drank all the wine?",
+            "These barrels are all empty. Who drank all the wine?"
         },
 
         {   "Bones creek under your feet. An ominous aura fills the room.",
             "Stone pillars stretch far beneath the water.",
             "Many others have failed to reach here. Consider yourself lucky.",
-            "The sand feels cold. Has it always been this way. Summer never seems to arrive.",
+            "The sand feels cold. Has it always been this way? Summer never seems to arrive."
         },
 
         {   "Snarls echo along the walls. Deep scratches and bloodstains seem to mar the floor.",
             "Once a bastion of awe-inspiring weaponry and skilled craftsmanship, now rusted and abandoned.",
             "Here sat a merciless king. Beneath his greed was a but a lonely coward.",
-            "This is how he escaped. Where does it lead?",
+            "This is how he escaped. Where does it lead?"
         },
 
         {   "Watch your step. Many have met their end here.",
             "These waters are known for their rejuvinating power.",
             "Wonderful knowledge is kept here, so are secrets.",
-            "Long ago, this was a place of worship for many. Now it is the resting place of a forgotten.",
-        },
+            "Long ago, this was a place of worship for many. Now it is the resting place of a forgotten."
+        }
     };
 
     private Room playerTile;
