@@ -162,20 +162,25 @@ public class TextBasedAdventure : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the player position to a new row and column position
+    /// Sets the player position to the tile corresponging to the matching teleporter in the dungeon
     /// </summary>
-    /// <param name="newRow"></param>
-    /// <param name="newCol"></param>
-    private void SetPlayerPosition(int newRow, int newCol)
+    private void TryTeleport()
     {
-        if (CheckIfNewPositionInTileBounds(newRow, newCol))
+        bool isTeleporterCountValid = ValidateTeleporterCount();
+        if (!isTeleporterCountValid)
         {
-            playerRow = newRow;
-            playerCol = newCol;
+            return;
         }
-        else
+        bool wasTeleporterPairFound = FindTeleporterPair(out int teleporterRow, out int teleporterCol);
+        if (!wasTeleporterPairFound)
         {
-            Debug.Log("Can't go that way");
+            return;
+        }
+        bool wasTileAvailable = SetPlayerPosition(teleporterRow, teleporterCol);
+        if (wasTileAvailable)
+        {
+            playerTile = dungeon[playerPosition.row, playerPosition.col];
+            OutputTileInformation();
         }
     }
 
