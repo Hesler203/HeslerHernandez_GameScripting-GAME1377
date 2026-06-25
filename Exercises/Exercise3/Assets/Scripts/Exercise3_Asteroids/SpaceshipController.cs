@@ -57,7 +57,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (rotationInput > .01f || rotationInput < .01f) // ensures deadzone
         {   // rotation will be clockwise with d-key
-            transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.fixedDeltaTime);
+            transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.deltaTime);
         }
     }
 
