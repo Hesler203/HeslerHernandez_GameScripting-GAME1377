@@ -56,7 +56,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     private void HandleRotation()
     {
         if (rotationInput > .01f || rotationInput < .01f) // ensures deadzone
-        {
+        {   // rotation will be clockwise with d-key
             transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.fixedDeltaTime);
         }
     }
@@ -86,7 +86,7 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleHyperspace()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2")) // set to space-key
         {
             TeleportToRandomLocation();
         }
