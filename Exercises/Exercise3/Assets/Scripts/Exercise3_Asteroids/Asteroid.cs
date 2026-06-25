@@ -51,5 +51,11 @@ public class Asteroid : MonoBehaviour
         spawner.SpawnAsteroid(spawner.randomSpawnLocation, childSize);
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }
