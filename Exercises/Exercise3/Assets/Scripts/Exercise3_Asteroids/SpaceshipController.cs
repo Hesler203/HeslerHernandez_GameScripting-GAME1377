@@ -26,8 +26,8 @@ using UnityEngine;
 public class AsteroidsPlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float rotationSpeed = 360f;
-    [SerializeField] private float thrustForce = 500f;
+    [SerializeField] private float rotationSpeed = 250f;
+    [SerializeField] private float thrustForce = 5f;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
 
