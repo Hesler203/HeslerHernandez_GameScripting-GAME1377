@@ -34,6 +34,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Asteroid"))
         {
+            collision.gameObject.SendMessage("BreakAsteroid");
             Destroy(this.gameObject);
         }
     }

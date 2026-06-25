@@ -27,6 +27,14 @@ public class AsteroidSpawner : MonoBehaviour
     private float spawnYMin = 0f;
     private float playerSafeDistance = 3;
 
+    [SerializeField] private GameObject asteroidSmall;
+    [SerializeField] private GameObject asteroidMedium;
+    [SerializeField] private GameObject asteroidLarge;
+    [SerializeField] private int initalSpawnAmount;
+    [SerializeField] private int childSpawnAmount = 2;
+    private float randomXInBounds;
+    private float randomYInBounds;
+    public Vector3 randomSpawnLocation;
     void Start()
     {
         float screenHalfHeight = Camera.main.orthographicSize;
@@ -63,7 +71,28 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-       // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
+        setRandomSpawnLocation();
+
+        // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
+        switch (size)
+        {
+            case Asteroid.AsteroidSize.Small:
+                for (int i = childSpawnAmount; i > (int)size; i--)
+                {
+                    GameObject spawnedAsteroidSmall = Instantiate(asteroidSmall, position, transform.rotation);
+                }
+                break;
+            case Asteroid.AsteroidSize.Medium:
+                for (int i = childSpawnAmount; i >= (int)size; i--)
+                {
+                    GameObject spawnedAsteroidMedium = Instantiate(asteroidMedium, position, transform.rotation);
+                }
+                break;
+            case Asteroid.AsteroidSize.Large:
+                GameObject spawnedAsteroidLarge = Instantiate(asteroidLarge, position, transform.rotation);
+                break;
+        }
+    }
 
     private void setRandomSpawnLocation()
     {
