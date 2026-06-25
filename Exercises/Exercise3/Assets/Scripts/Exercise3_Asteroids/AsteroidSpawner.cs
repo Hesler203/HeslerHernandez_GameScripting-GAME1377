@@ -30,11 +30,20 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private GameObject asteroidSmall;
     [SerializeField] private GameObject asteroidMedium;
     [SerializeField] private GameObject asteroidLarge;
+
     [SerializeField] private int initalSpawnAmount;
     [SerializeField] private int childSpawnAmount = 2;
+    [SerializeField] private int recurringSpawnAmount = 2;
+
+
     private float randomXInBounds;
     private float randomYInBounds;
     public Vector3 randomSpawnLocation;
+
+    [SerializeField] private float minSpawnDelay = 3.0f;
+    [SerializeField] private float maxSpawnDelay = 6.0f;
+    private float randomSpawnTimer;
+
     void Start()
     {
         float screenHalfHeight = Camera.main.orthographicSize;
@@ -50,7 +59,8 @@ public class AsteroidSpawner : MonoBehaviour
 
     void Update()
     {
-        
+        randomSpawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
+        InvokeRepeating(nameof(SpawnAsteroid), randomSpawnTimer, recurringSpawnAmount);
     }
 
     private void SpawnInitialAsteroids()
