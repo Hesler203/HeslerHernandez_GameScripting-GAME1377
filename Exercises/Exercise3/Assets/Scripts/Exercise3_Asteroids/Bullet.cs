@@ -27,6 +27,7 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.AddRelativeForce(Vector2.up * bulletSpeed, ForceMode2D.Impulse);
 
+        Destroy(this.gameObject, bulletLifetime);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
