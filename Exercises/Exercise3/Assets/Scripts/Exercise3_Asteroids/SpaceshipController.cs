@@ -95,7 +95,9 @@ public class AsteroidsPlayerController : MonoBehaviour
     private void TeleportToRandomLocation()
     {
         float randomXInBounds = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
+        float randomYInBounds = Random.Range(ScreenBounds.ScreenBottom, ScreenBounds.ScreenTop);
 
         Vector3 teleportPosition = new Vector3(randomXInBounds, randomYInBounds);
+        transform.position = teleportPosition;
     }
 }
