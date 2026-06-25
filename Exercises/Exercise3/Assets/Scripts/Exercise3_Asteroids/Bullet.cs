@@ -18,16 +18,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float bulletSpeed = 100f;
-    [SerializeField] private float bulletLifetime = 5f;
+    [SerializeField] private float bulletSpeed = 10f;
+    [SerializeField] private float bulletLifetime = 1f;
     private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.AddRelativeForce(Vector2.up * bulletSpeed, ForceMode2D.Impulse);
+        rb.AddRelativeForce(Vector2.up * bulletSpeed, ForceMode2D.Impulse); // uses local space
 
-        Destroy(this.gameObject, bulletLifetime);
+        Destroy(this.gameObject, bulletLifetime); // delayed death
     }
 
     void OnCollisionEnter2D(Collision2D collision)
