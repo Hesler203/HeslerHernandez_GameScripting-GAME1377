@@ -31,11 +31,18 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
+        rb = gameObject.GetComponent<Rigidbody2D>();
         spawner = gameObject.GetComponentInParent<AsteroidSpawner>();
+
+        //rb.AddTorque(speed, ForceMode2D.Force); ??
+
+        velocity = new Vector2(Random.value, Random.value).normalized; // ??
+        rb.AddForce(speed * velocity, ForceMode2D.Impulse); // ??
     }
 
     void Update()
-    {
+    {   // ??
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed) * Time.deltaTime;
     }
 
     private void BreakAsteroid()
