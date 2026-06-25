@@ -55,7 +55,10 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleRotation()
     {
-
+        if (rotationInput > .01f || rotationInput < .01f) // ensures deadzone
+        {
+            transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.fixedDeltaTime);
+        }
     }
 
     private void HandleThrust()
