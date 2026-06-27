@@ -66,9 +66,7 @@ public class AsteroidSpawner : MonoBehaviour
     private void SpawnInitialAsteroids()
     {
         // Spawn initial asteroids at random positions. Ensure that they do not spawn where the player is located.
-        float spawnDistance = Vector3.Distance(Vector3.zero, randomSpawnLocation);
-
-        if (spawnDistance > playerSafeDistance)
+        for (int i = 0; i < initalSpawnAmount; i++)
         {
             setRandomSpawnLocation();
             if (IsSpawnDistanceSafe())
