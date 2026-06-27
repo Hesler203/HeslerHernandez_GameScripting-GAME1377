@@ -55,7 +55,7 @@ public class Asteroid : MonoBehaviour
 
     private void SpawnChildren(AsteroidSize childSize)
     {
-        spawner.SpawnAsteroid(spawner.randomSpawnLocation, childSize);
+        spawner.SpawnAsteroid(transform.position, childSize);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
