@@ -36,13 +36,12 @@ public class Asteroid : MonoBehaviour
 
         //rb.AddTorque(speed, ForceMode2D.Force); ??
 
-        velocity = new Vector2(Random.value, Random.value).normalized; // ??
-        rb.AddForce(speed * velocity, ForceMode2D.Impulse); // ??
-    }
+        float randomX = Random.Range(-Random.value, Random.value);
+        float randomY = Random.Range(-Random.value, Random.value);
+        velocity = new Vector2(randomX, randomY).normalized;
 
-    void Update()
-    {   // ??
-        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed) * Time.deltaTime;
+        rb.AddForce(speed * velocity, ForceMode2D.Impulse);
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
     }
 
     private void BreakAsteroid()
