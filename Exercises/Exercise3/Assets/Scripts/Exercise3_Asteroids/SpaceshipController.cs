@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AsteroidsPlayerController : MonoBehaviour
 {
+    private GameManager GM;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
@@ -15,6 +16,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        GM = FindAnyObjectByType<GameManager>();
     }
 
     void Update()
@@ -82,5 +84,10 @@ public class AsteroidsPlayerController : MonoBehaviour
 
         Vector3 teleportPosition = new Vector3(randomXInBounds, randomYInBounds);
         transform.position = teleportPosition;
+    }
+
+    void OnDestroy()
+    {
+        GM.GameOver();
     }
 }
