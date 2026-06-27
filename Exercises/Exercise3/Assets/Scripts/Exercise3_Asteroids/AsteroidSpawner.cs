@@ -79,10 +79,20 @@ public class AsteroidSpawner : MonoBehaviour
         }
     }
 
+    private bool IsSpawnDistanceSafe()
+    {
+        float spawnDistance = Vector3.Distance(Vector3.zero, randomSpawnLocation);
+
+        while (spawnDistance < playerSafeDistance)
+        {
+            setRandomSpawnLocation();
+            spawnDistance = Vector3.Distance(Vector3.zero, randomSpawnLocation);
+        }
+        return true;
+    }
+
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        setRandomSpawnLocation();
-
         // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
         switch (size)
         {
