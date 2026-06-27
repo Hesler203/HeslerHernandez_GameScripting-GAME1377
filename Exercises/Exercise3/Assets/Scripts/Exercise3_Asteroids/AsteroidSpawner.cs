@@ -70,10 +70,9 @@ public class AsteroidSpawner : MonoBehaviour
 
         if (spawnDistance > playerSafeDistance)
         {
-            for (int i = 0; i < initalSpawnAmount; i++)
+            setRandomSpawnLocation();
+            if (IsSpawnDistanceSafe())
             {
-                setRandomSpawnLocation();
-
                 SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
             }
         }
