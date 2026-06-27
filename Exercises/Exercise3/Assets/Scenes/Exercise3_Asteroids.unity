@@ -296,6 +296,8 @@ MonoBehaviour:
   initalSpawnAmount: 5
   childSpawnAmount: 2
   randomSpawnLocation: {x: 0, y: 0, z: 0}
+  minSpawnDelay: 3
+  maxSpawnDelay: 6
 --- !u!1 &622455421
 GameObject:
   m_ObjectHideFlags: 0
