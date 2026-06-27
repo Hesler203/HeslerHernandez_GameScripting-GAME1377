@@ -60,9 +60,9 @@ public class Asteroid : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
-            Destroy(collision.gameObject);
+            Destroy(collision.collider.gameObject);
         }
     }
 }
