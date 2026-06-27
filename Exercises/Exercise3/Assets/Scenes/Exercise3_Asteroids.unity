@@ -464,6 +464,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &624137580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624137578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0291ae1a656b5cf4fa3be3f49f82d1b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneManager
 --- !u!1 &1412308278 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2357516278731701826, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
@@ -538,6 +550,10 @@ PrefabInstance:
     - target: {fileID: 2357516278731701826, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
       propertyPath: m_Name
       value: Spaceship
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357516278731701826, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5399728238154126411, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
       propertyPath: m_LocalPosition.x

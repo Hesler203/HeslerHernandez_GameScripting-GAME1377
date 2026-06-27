@@ -1,20 +1,3 @@
-/*
-* Assignment: Asteroids Game - AstroidSpawner Script - PART 2
-*
-* Objective: Create a functional asteroid spawning script. This script will be responsible for spawning
-* asteroids at the start of the game, as well as spawning smaller asteroids when larger asteroids are destroyed.
-* ALL ASTEROID SPAWNING SHOULD OCCUR THROUGH THIS SCRIPT.
-*
-* Requirements:
-* 1. Fill in the SpawnAsteroids method to spawn an asteroid at a location specified by the position and size parameters.
-*       Hint: You may need to create a variable for the prefabs you need.
-*       Hint: Use the spawnXMax, spawnXMin, spawnYMax, and spawnYMin variables to determine where the asteroids can spawn.
-* 2. Spawn a variable number of asteroids at the start of the game using the SpawnInitialAsteroids() method.
-*       This should be determined by a private variable that can be set in the editor (set it to 5 in the Inspector).
-*       The asteroids should spawn at random positions within the camera view, but not too close to the center (0,0)
-*       where the player will be (at least 3 units away from the center in any direction).
-*       Hint: Vector3.Distance can tell you how far one point is away from another.
-*/
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
@@ -31,17 +14,15 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private GameObject asteroidMedium;
     [SerializeField] private GameObject asteroidLarge;
 
-    [SerializeField] private int initalSpawnAmount;
+    [SerializeField] private int initalSpawnAmount; // set to 5 in the inspector
     [SerializeField] private int childSpawnAmount = 2;
-    [SerializeField] private int recurringSpawnAmount = 2;
-
 
     private float randomXInBounds;
     private float randomYInBounds;
-    public Vector3 randomSpawnLocation;
+    private Vector3 randomSpawnLocation;
 
-    [SerializeField] private float minSpawnDelay = 3.0f;
-    [SerializeField] private float maxSpawnDelay = 6.0f;
+    [SerializeField] private float minSpawnDelay = 3f;
+    [SerializeField] private float maxSpawnDelay = 6f;
     private float randomSpawnTimer;
 
     void Start()
