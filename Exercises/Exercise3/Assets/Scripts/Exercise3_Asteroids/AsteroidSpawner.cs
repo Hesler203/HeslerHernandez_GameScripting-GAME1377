@@ -90,16 +90,22 @@ public class AsteroidSpawner : MonoBehaviour
                 for (int i = childSpawnAmount; i > (int)size; i--)
                 {
                     GameObject spawnedAsteroidSmall = Instantiate(asteroidSmall, position, transform.rotation);
+
+                    spawnedAsteroidSmall.GetComponent<Asteroid>().Initialize(this);
                 }
                 break;
             case Asteroid.AsteroidSize.Medium:
                 for (int i = childSpawnAmount; i >= (int)size; i--)
                 {
                     GameObject spawnedAsteroidMedium = Instantiate(asteroidMedium, position, transform.rotation);
+
+                    spawnedAsteroidMedium.GetComponent<Asteroid>().Initialize(this);
                 }
                 break;
             case Asteroid.AsteroidSize.Large:
                 GameObject spawnedAsteroidLarge = Instantiate(asteroidLarge, position, transform.rotation);
+
+                spawnedAsteroidLarge.GetComponent<Asteroid>().Initialize(this);
                 break;
         }
     }

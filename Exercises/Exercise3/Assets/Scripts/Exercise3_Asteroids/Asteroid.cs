@@ -29,12 +29,14 @@ public class Asteroid : MonoBehaviour
     private AsteroidSpawner spawner;
     private Vector2 velocity;
 
+    public void Initialize(AsteroidSpawner asteroidSpawner)
+    {
+        spawner = asteroidSpawner;
+    }
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        spawner = gameObject.GetComponentInParent<AsteroidSpawner>();
-
-        //rb.AddTorque(speed, ForceMode2D.Force); ??
 
         float randomX = Random.Range(-Random.value, Random.value);
         float randomY = Random.Range(-Random.value, Random.value);
