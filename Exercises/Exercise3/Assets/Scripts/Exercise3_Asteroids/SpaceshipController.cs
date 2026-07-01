@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AsteroidsPlayerController : MonoBehaviour
 {
-    private GameManager gameManager;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
@@ -15,7 +14,6 @@ public class AsteroidsPlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     void Update()
@@ -103,6 +101,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     }
     void OnDestroy()
     {
-        gameManager.GameOver();
+        Debug.Log("Game Over");
+        Debug.Break();
     }
 }

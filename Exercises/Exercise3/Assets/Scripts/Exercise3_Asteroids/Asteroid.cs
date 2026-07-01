@@ -44,7 +44,6 @@ public class Asteroid : MonoBehaviour
         int sizeDown = (int)size - 1;
         SpawnChildren((AsteroidSize)sizeDown);
 
-        spawner.DecreaseAsteroidCounter();
         Destroy(this.gameObject);
     }
 

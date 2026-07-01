@@ -18,17 +18,11 @@ public class AsteroidSpawner : MonoBehaviour
     // Asteroid spawn counters
     [SerializeField] private int initalSpawnAmount; // set to 5 in the inspector
     [SerializeField] private int childSpawnAmount = 2;
-    private float currentAsteroidCount = 0;
 
     // Variables used in randomizing the asteroid's spawn location
     private float randomXInBounds;
     private float randomYInBounds;
     private Vector3 randomSpawnLocation;
-
-    // Variables used in randomizing the spawn frequency of recurring asteroid spawns
-    [SerializeField] private float minSpawnDelay = 3f;
-    [SerializeField] private float maxSpawnDelay = 6f;
-    private float randomSpawnTimer;
 
     void Start()
     {
@@ -41,9 +35,6 @@ public class AsteroidSpawner : MonoBehaviour
         spawnYMin = -screenHalfHeight - playerSafeDistance;
 
         SpawnInitialAsteroids();
-
-        SetRandomSpawnTimer();
-        Invoke(nameof(SpawnRecurringAsteroids), randomSpawnTimer);
     }
 
     /// <summary>
@@ -108,7 +99,6 @@ public class AsteroidSpawner : MonoBehaviour
                     }
                     GameObject spawnedAsteroidSmall = Instantiate(asteroidSmall, position, transform.rotation);
                     spawnedAsteroidSmall.GetComponent<Asteroid>().InitializeSpawner(this);
-                    currentAsteroidCount++;
                 }
                 break;
             case Asteroid.AsteroidSize.Medium: // spawns 2 medium asteroids
@@ -121,7 +111,6 @@ public class AsteroidSpawner : MonoBehaviour
                     }
                     GameObject spawnedAsteroidMedium = Instantiate(asteroidMedium, position, transform.rotation);
                     spawnedAsteroidMedium.GetComponent<Asteroid>().InitializeSpawner(this);
-                    currentAsteroidCount++;
                 }
                 break;
             case Asteroid.AsteroidSize.Large: // spawns 1 large asteroid
@@ -132,29 +121,7 @@ public class AsteroidSpawner : MonoBehaviour
                 }
                 GameObject spawnedAsteroidLarge = Instantiate(asteroidLarge, position, transform.rotation);
                 spawnedAsteroidLarge.GetComponent<Asteroid>().InitializeSpawner(this);
-                currentAsteroidCount++;
                 break;
         }
-    }
-
-    private void SetRandomSpawnTimer()
-    {
-        randomSpawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
-    }
-
-    private void SpawnRecurringAsteroids()
-    {
-        if (currentAsteroidCount == 0)
-        {
-            SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
-        }
-
-        SetRandomSpawnTimer();
-        Invoke(nameof(SpawnRecurringAsteroids), randomSpawnTimer);
-    }
-
-    public void DecreaseAsteroidCounter()
-    {
-        currentAsteroidCount--;
     }
 }
