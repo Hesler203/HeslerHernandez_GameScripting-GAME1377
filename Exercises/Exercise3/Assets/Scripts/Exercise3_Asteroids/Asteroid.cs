@@ -10,10 +10,15 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private float maxRotationSpeed = 180f;
 
     private Rigidbody2D rb;
-    private AsteroidSpawner spawner;
     private Vector2 velocity;
 
-    public void Initialize(AsteroidSpawner asteroidSpawner)
+    private AsteroidSpawner spawner;
+
+    /// <summary>
+    /// Sets the reference to the asteroid spawner object, to be called right after a new asteroid instance
+    /// </summary>
+    /// <param name="asteroidSpawner">reference to the asteroid spawner object</param>
+    public void InitializeSpawner(AsteroidSpawner asteroidSpawner)
     {
         spawner = asteroidSpawner;
     }
@@ -24,21 +29,29 @@ public class Asteroid : MonoBehaviour
 
         float randomX = Random.Range(-Random.value, Random.value);
         float randomY = Random.Range(-Random.value, Random.value);
-        velocity = new Vector2(randomX, randomY).normalized;
+        velocity = new Vector2(randomX, randomY).normalized; // save only the random direction into velocity
 
-        rb.AddForce(speed * velocity, ForceMode2D.Impulse);
-        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
+        rb.AddForce(speed * velocity, ForceMode2D.Impulse); // instant speed in the random direction
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed); // rotates at random speed in range
     }
 
+    /// <summary>
+    /// Determines the next smallest size asteroids to be spawned and passes this size
+    /// to SpawnChildren() before self-destruct
+    /// </summary>
     private void BreakAsteroid()
     {
         int sizeDown = (int)size - 1;
         SpawnChildren((AsteroidSize)sizeDown);
 
-        spawner.decreaseAsteroidCounter();
+        spawner.DecreaseAsteroidCounter();
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// Passes in the parent asteroid's position & the recieved asteroid size from argument to SpawnAsteroid()
+    /// </summary>
+    /// <param name="childSize"> the next smallest asteroid size to be spawned as children</param>
     private void SpawnChildren(AsteroidSize childSize)
     {
         spawner.SpawnAsteroid(transform.position, childSize);

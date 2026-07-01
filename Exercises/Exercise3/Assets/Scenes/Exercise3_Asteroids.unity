@@ -295,7 +295,6 @@ MonoBehaviour:
   asteroidLarge: {fileID: 8730189705238761009, guid: 91552452341758443a49a0520fe30970, type: 3}
   initalSpawnAmount: 5
   childSpawnAmount: 2
-  randomSpawnLocation: {x: 0, y: 0, z: 0}
   minSpawnDelay: 3
   maxSpawnDelay: 6
 --- !u!1 &622455421
@@ -543,6 +542,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 642762768615809231, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
+      propertyPath: warpTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 642762768615809231, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
       propertyPath: thrustForce
       value: 5
       objectReference: {fileID: 0}
@@ -596,6 +599,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5399728238154126411, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7819064381781324238, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
+      propertyPath: m_LinearDamping
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7819064381781324238, guid: b5bed9ac15f324145b2fdce28eb50970, type: 3}
+      propertyPath: m_AngularDamping
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

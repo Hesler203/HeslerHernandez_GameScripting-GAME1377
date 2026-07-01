@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.collider.CompareTag("Asteroid"))
         {
-            collision.collider.gameObject.SendMessage("BreakAsteroid");
+            collision.collider.gameObject.SendMessage("BreakAsteroid"); // allows calling the private method
             Destroy(this.gameObject);
         }
     }

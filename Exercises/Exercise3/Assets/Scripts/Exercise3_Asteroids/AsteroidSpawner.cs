@@ -8,24 +8,27 @@ public class AsteroidSpawner : MonoBehaviour
     private float spawnXMin = 0f;
     private float spawnYMax = 0f;
     private float spawnYMin = 0f;
-    private float playerSafeDistance = 3;
+    private float playerSafeDistance = 3f;
 
+    // Variables to store the references to the different asteroid prefabs
     [SerializeField] private GameObject asteroidSmall;
     [SerializeField] private GameObject asteroidMedium;
     [SerializeField] private GameObject asteroidLarge;
 
+    // Asteroid spawn counters
     [SerializeField] private int initalSpawnAmount; // set to 5 in the inspector
     [SerializeField] private int childSpawnAmount = 2;
+    private float currentAsteroidCount = 0;
 
+    // Variables used in randomizing the asteroid's spawn location
     private float randomXInBounds;
     private float randomYInBounds;
     private Vector3 randomSpawnLocation;
 
+    // Variables used in randomizing the spawn frequency of recurring asteroid spawns
     [SerializeField] private float minSpawnDelay = 3f;
     [SerializeField] private float maxSpawnDelay = 6f;
     private float randomSpawnTimer;
-
-    private float asteroidCounter = 0;
 
     void Start()
     {
@@ -39,93 +42,119 @@ public class AsteroidSpawner : MonoBehaviour
 
         SpawnInitialAsteroids();
 
-        setRandomSpawnTimer();
+        SetRandomSpawnTimer();
         Invoke(nameof(SpawnRecurringAsteroids), randomSpawnTimer);
     }
 
+    /// <summary>
+    /// Spawns the initial large asteroids at random locations within safe distance from player
+    /// </summary>
     private void SpawnInitialAsteroids()
     {
-        // Spawn initial asteroids at random positions. Ensure that they do not spawn where the player is located.
+        // Spawn initial asteroids at random positions
         for (int i = 0; i < initalSpawnAmount; i++)
         {
-            setRandomSpawnLocation();
-            if (IsSpawnDistanceSafe())
+            SetRandomSpawnLocation(); // set random location to spawn from
+            if (IsSpawnDistanceSafe()) // ensure that they do not spawn where the player is located.
             {
                 SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
             }
         }
     }
 
+    /// <summary>
+    /// Sets the randomSpawnLocation to be a new Vector3 using random ranges within the screen bounds
+    /// </summary>
+    private void SetRandomSpawnLocation()
+    {
+        randomXInBounds = Random.Range(spawnXMin, spawnXMax);
+        randomYInBounds = Random.Range(spawnYMin, spawnYMax);
+        randomSpawnLocation = new Vector3(randomXInBounds, randomYInBounds);
+    }
+
+    /// <summary>
+    /// Continuously sets a new RandomSpawnLocation and checks for it being within safe distance of the player
+    /// </summary>
+    /// <returns>true once the potential asteroid spawn location is past the playerSafeDistance</returns>
     private bool IsSpawnDistanceSafe()
     {
         float spawnDistance = Vector3.Distance(Vector3.zero, randomSpawnLocation);
 
         while (spawnDistance < playerSafeDistance)
         {
-            setRandomSpawnLocation();
+            SetRandomSpawnLocation();
             spawnDistance = Vector3.Distance(Vector3.zero, randomSpawnLocation);
         }
         return true;
     }
 
-    private void SpawnRecurringAsteroids()
-    {
-        if (asteroidCounter == 0)
-        {
-            SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
-        }
-
-        setRandomSpawnTimer();
-        Invoke(nameof(SpawnRecurringAsteroids), randomSpawnTimer);
-    }
-
+    /// <summary>
+    /// Spawns asteroids based on the passed in size enum & initializes their reference to this spawner
+    /// </summary>
+    /// <param name="position">the spawning location</param>
+    /// <param name="size">determines which asteroid prefab to spawn</param>
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
+        // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter
         switch (size)
         {
-            case Asteroid.AsteroidSize.Small:
-                for (int i = childSpawnAmount; i > (int)size; i--)
+            case Asteroid.AsteroidSize.Small: // spawns 2 small asteroids
+                for (int i = childSpawnAmount; i > (int)size; i--) // (int)size will be 0
                 {
+                    if (asteroidSmall == null)
+                    {
+                        Debug.LogWarning("Small Asteroid prefab not assigned!");
+                        return;
+                    }
                     GameObject spawnedAsteroidSmall = Instantiate(asteroidSmall, position, transform.rotation);
-
-                    spawnedAsteroidSmall.GetComponent<Asteroid>().Initialize(this);
-                    asteroidCounter++;
+                    spawnedAsteroidSmall.GetComponent<Asteroid>().InitializeSpawner(this);
+                    currentAsteroidCount++;
                 }
                 break;
-            case Asteroid.AsteroidSize.Medium:
-                for (int i = childSpawnAmount; i >= (int)size; i--)
+            case Asteroid.AsteroidSize.Medium: // spawns 2 medium asteroids
+                for (int i = childSpawnAmount; i >= (int)size; i--) // (int)size will be 1
                 {
+                    if (asteroidMedium == null)
+                    {
+                        Debug.LogWarning("Medium Asteroid prefab not assigned!");
+                        return;
+                    }
                     GameObject spawnedAsteroidMedium = Instantiate(asteroidMedium, position, transform.rotation);
-
-                    spawnedAsteroidMedium.GetComponent<Asteroid>().Initialize(this);
-                    asteroidCounter++;
+                    spawnedAsteroidMedium.GetComponent<Asteroid>().InitializeSpawner(this);
+                    currentAsteroidCount++;
                 }
                 break;
-            case Asteroid.AsteroidSize.Large:
+            case Asteroid.AsteroidSize.Large: // spawns 1 large asteroid
+                if (asteroidLarge == null)
+                {
+                    Debug.LogWarning("Large Asteroid prefab not assigned!");
+                    return;
+                }
                 GameObject spawnedAsteroidLarge = Instantiate(asteroidLarge, position, transform.rotation);
-
-                spawnedAsteroidLarge.GetComponent<Asteroid>().Initialize(this);
-                asteroidCounter++;
+                spawnedAsteroidLarge.GetComponent<Asteroid>().InitializeSpawner(this);
+                currentAsteroidCount++;
                 break;
         }
     }
 
-    private void setRandomSpawnLocation()
-    {
-        randomXInBounds = Random.Range(spawnXMin, spawnXMax);
-        randomYInBounds = Random.Range(spawnYMin, spawnYMax);
-
-        randomSpawnLocation = new Vector3(randomXInBounds, randomYInBounds);
-    }
-
-    private void setRandomSpawnTimer()
+    private void SetRandomSpawnTimer()
     {
         randomSpawnTimer = Random.Range(minSpawnDelay, maxSpawnDelay);
     }
 
-    public void decreaseAsteroidCounter()
+    private void SpawnRecurringAsteroids()
     {
-        asteroidCounter--;
+        if (currentAsteroidCount == 0)
+        {
+            SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
+        }
+
+        SetRandomSpawnTimer();
+        Invoke(nameof(SpawnRecurringAsteroids), randomSpawnTimer);
+    }
+
+    public void DecreaseAsteroidCounter()
+    {
+        currentAsteroidCount--;
     }
 }
