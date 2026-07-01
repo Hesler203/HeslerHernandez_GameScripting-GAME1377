@@ -22,10 +22,12 @@ public class PlayerControllerX : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Physics.gravity *= gravityModifier;
-        playerAudio = GetComponent<AudioSource>();
         floatAction.Enable();
 
+        playerAudio = GetComponent<AudioSource>();
+        playerRb = GetComponent<Rigidbody>();
+
+        Physics.gravity *= gravityModifier;
         // Apply a small upward force at the start of the game
         playerRb.AddForce(Vector3.up * 5, ForceMode.Impulse);
 
@@ -34,13 +36,21 @@ public class PlayerControllerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    void FixedUpdate()
+    {
+        HandleFloat();
+    }
+
+    private void HandleFloat()
+    {
         // While space is pressed and player is low enough, float up
         if (floatAction.IsPressed() && !gameOver)
         {
-            playerRb.AddForce(Vector3.up * floatForce);
+            playerRb.AddForce(Vector3.up * floatForce, ForceMode.Acceleration);
         }
     }
-
     private void OnCollisionEnter(Collision other)
     {
         // if player collides with bomb, explode and set gameOver to true
@@ -51,7 +61,7 @@ public class PlayerControllerX : MonoBehaviour
             gameOver = true;
             Debug.Log("Game Over!");
             Destroy(other.gameObject);
-        } 
+        }
 
         // if player collides with money, fireworks
         else if (other.gameObject.CompareTag("Money"))
