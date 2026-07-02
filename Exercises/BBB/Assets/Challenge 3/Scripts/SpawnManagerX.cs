@@ -1,34 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnManagerX : MonoBehaviour
 {
-    public GameObject[] objectPrefabs;
-    private float spawnDelay = 2;
-    private float spawnInterval = 1.5f;
+    [SerializeField] private GameObject[] objectPrefabs;
+    [SerializeField] private float spawnDelay = 2.0f;
+    [SerializeField] private float spawnInterval = 1.5f;
+    [SerializeField] private const float SPAWN_X_POS = 30f;
+    [SerializeField] private float spawnYMin = 3f;
+    [SerializeField] private float spawnYMax = 15f;
 
-    private PlayerControllerX playerControllerScript;
-
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("PrawnsObject", spawnDelay, spawnInterval);
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerControllerX>();
+        InvokeRepeating("SpawnObjects", spawnDelay, spawnInterval);
     }
 
-    // Spawn obstacles
-    void SpawnObjects ()
+    /// <summary>
+    /// Spawns objects from the objectPrefabs[] within the spawn range while game is active
+    /// </summary>
+    void SpawnObjects()
     {
         // Set random spawn location and random object index
-        Vector3 spawnLocation = new Vector3(30, Random.Range(5, 15), 0);
-        int index = Random.Range(0, objectPrefabs.Length);
+        float spawnYRange = Random.Range(spawnYMin, spawnYMax);
+        Vector3 spawnLocation = new Vector3(SPAWN_X_POS, spawnYRange);
+        int randomIndex = Random.Range(0, objectPrefabs.Length);
 
-        // If game is still active, spawn new object
-        if (!playerControllerScript.gameOver)
+        // While game is active, spawn new object
+        if (!GameManager.IsGameOver)
         {
-            Instantiate(objectPrefabs[index], spawnLocation, objectPrefabs[index].transform.rotation);
+            Instantiate(objectPrefabs[randomIndex], spawnLocation, objectPrefabs[randomIndex].transform.rotation);
         }
-
     }
 }
