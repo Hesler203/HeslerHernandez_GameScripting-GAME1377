@@ -41,7 +41,26 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         // if player collides with bomb, explode and trigger GameOver
+        if (other.gameObject.CompareTag("Bomb"))
+        {
+            explosionParticle.Play();
+            GameManager.GameOver();
+            Destroy(other.gameObject);
+        }
 
+        // if player collides with ground, bounce
+        if (other.gameObject.CompareTag("Ground"))
+        {
+        }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        // if player collides with money, fireworks
+        if (other.gameObject.CompareTag("Money"))
+        {
+            fireworksParticle.Play();
+            Destroy(other.gameObject);
+        }
+    }
 }
