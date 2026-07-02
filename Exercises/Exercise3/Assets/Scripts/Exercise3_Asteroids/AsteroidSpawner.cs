@@ -10,16 +10,13 @@ public class AsteroidSpawner : MonoBehaviour
     private float spawnYMin = 0f;
     private float playerSafeDistance = 3f;
 
-    // Variables to store the references to the different asteroid prefabs
     [SerializeField] private GameObject asteroidSmall;
     [SerializeField] private GameObject asteroidMedium;
     [SerializeField] private GameObject asteroidLarge;
 
-    // Asteroid spawn counters
-    [SerializeField] private int initalSpawnAmount; // set to 5 in the inspector
+    [SerializeField] private int initalSpawnAmount;
     [SerializeField] private int childSpawnAmount = 2;
 
-    // Variables used in randomizing the asteroid's spawn location
     private float randomXInBounds;
     private float randomYInBounds;
     private Vector3 randomSpawnLocation;
@@ -42,11 +39,10 @@ public class AsteroidSpawner : MonoBehaviour
     /// </summary>
     private void SpawnInitialAsteroids()
     {
-        // Spawn initial asteroids at random positions
         for (int i = 0; i < initalSpawnAmount; i++)
         {
-            SetRandomSpawnLocation(); // set random location to spawn from
-            if (IsSpawnDistanceSafe()) // ensure that they do not spawn where the player is located.
+            SetRandomSpawnLocation();
+            if (IsSpawnDistanceSafe())
             {
                 SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
             }
@@ -86,7 +82,6 @@ public class AsteroidSpawner : MonoBehaviour
     /// <param name="size">determines which asteroid prefab to spawn</param>
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter
         switch (size)
         {
             case Asteroid.AsteroidSize.Small: // spawns 2 small asteroids

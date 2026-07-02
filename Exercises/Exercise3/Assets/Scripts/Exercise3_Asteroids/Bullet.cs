@@ -11,16 +11,16 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.AddRelativeForce(Vector2.up * bulletSpeed, ForceMode2D.Impulse); // uses local space
+        rb.AddRelativeForce(Vector2.up * bulletSpeed, ForceMode2D.Impulse);
 
-        Destroy(this.gameObject, bulletLifetime); // delayed death
+        Destroy(this.gameObject, bulletLifetime);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Asteroid"))
         {
-            collision.collider.gameObject.SendMessage("BreakAsteroid"); // allows calling the private method
+            collision.collider.gameObject.SendMessage("BreakAsteroid"); 
             Destroy(this.gameObject);
         }
     }

@@ -29,10 +29,10 @@ public class Asteroid : MonoBehaviour
 
         float randomX = Random.Range(-Random.value, Random.value);
         float randomY = Random.Range(-Random.value, Random.value);
-        velocity = new Vector2(randomX, randomY).normalized; // save only the random direction into velocity
+        velocity = new Vector2(randomX, randomY).normalized;
 
-        rb.AddForce(speed * velocity, ForceMode2D.Impulse); // instant speed in the random direction
-        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed); // rotates at random speed in range
+        rb.AddForce(speed * velocity, ForceMode2D.Impulse);
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed); 
     }
 
     /// <summary>

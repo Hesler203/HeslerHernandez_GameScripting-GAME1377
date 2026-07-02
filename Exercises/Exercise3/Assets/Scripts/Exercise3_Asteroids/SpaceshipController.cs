@@ -10,6 +10,8 @@ public class AsteroidsPlayerController : MonoBehaviour
     [SerializeField] private float thrustForce = 5f;
     private float rotationInput;
     private float thrustInput;
+    [SerializeField] private float deadZone = .01f;
+
 
     void Start()
     {
@@ -21,7 +23,7 @@ public class AsteroidsPlayerController : MonoBehaviour
         rotationInput = Input.GetAxis("Horizontal");
         thrustInput = Input.GetAxis("Vertical");
 
-        HandleRotation(); // uses transform & Time.deltaTime
+        HandleRotation();
         HandleFire();
         HandleHyperspace();
     }
@@ -29,7 +31,7 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        HandleThrust(); // uses physics system
+        HandleThrust();
     }
 
     /// <summary>
@@ -37,21 +39,20 @@ public class AsteroidsPlayerController : MonoBehaviour
     /// </summary>
     private void HandleRotation()
     {
-        if (rotationInput > .01f || rotationInput < .01f) // ensures deadzone
-        {   // rotation will be clockwise with d-key
+        if (rotationInput > deadZone || rotationInput < deadZone)
+        {
             transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.deltaTime);
         }
     }
 
     /// <summary>
     /// Applies a forward accelaration to the player in local space using the thrustInput & thrustForce multipliers
-    /// The player Rigidbody2D's linear drag setting determines its terminal velocity
     /// </summary>
     private void HandleThrust()
     {
-        if (thrustInput > .01f) // prevents backward movement plus ensures deadzone
+        if (thrustInput > deadZone)
         {
-            rb.AddRelativeForce(Vector3.up * thrustInput * thrustForce, ForceMode2D.Force); // uses local space
+            rb.AddRelativeForce(Vector3.up * thrustInput * thrustForce, ForceMode2D.Force);
         }
     }
 
@@ -60,7 +61,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     /// </summary>
     private void HandleFire()
     {
-        if (Input.GetButtonDown("Jump")) // set to spacebar
+        if (Input.GetButtonDown("Shoot"))
         {
             FireBullet();
         }
@@ -84,7 +85,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     /// </summary>
     private void HandleHyperspace()
     {
-        if (Input.GetButtonDown("Fire2")) // set to shift-key
+        if (Input.GetButtonDown("Warp"))
         {
             WarpToRandomLocation();
         }
