@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private ParticleSystem explosionParticle;
     [SerializeField] private ParticleSystem fireworksParticle;
+    private AudioManager audioManager;
 
     void Start()
     {
         floatAction.Enable();
+        audioManager = FindAnyObjectByType<AudioManager>();
 
         Physics.gravity *= gravityModifier;
         playerRb = GetComponent<Rigidbody>();
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Bomb"))
         {
             explosionParticle.Play();
+            audioManager.PlaySoundEffect(other.gameObject.tag);
             GameManager.GameOver();
             Destroy(other.gameObject);
         }
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
         // if player collides with ground, bounce
         if (other.gameObject.CompareTag("Ground"))
         {
+            audioManager.PlaySoundEffect("Bounce");
             playerRb.AddForce(Vector3.up * bounceForce, ForceMode.Impulse);
         }
     }
@@ -76,6 +80,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Money"))
         {
             fireworksParticle.Play();
+            audioManager.PlaySoundEffect(other.gameObject.tag);
             Destroy(other.gameObject);
         }
     }
