@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Global
@@ -20,5 +22,6 @@ public class GameManager : MonoBehaviour
     public static void GameOver()
     {
         IsGameOver = true;
+        Debug.Log($" Game Over \n Your score was: {ScoreUpdater.Score} ");
     }
 }

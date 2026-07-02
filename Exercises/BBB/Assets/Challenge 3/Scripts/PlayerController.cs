@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         {
             fireworksParticle.Play();
             audioManager.PlaySoundEffect(other.gameObject.tag);
+            ScoreUpdater.IncreaseScore();
             Destroy(other.gameObject);
         }
     }
