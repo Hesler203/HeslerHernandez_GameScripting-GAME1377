@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RepeatBackgroundX : MonoBehaviour
 {
@@ -10,18 +8,31 @@ public class RepeatBackgroundX : MonoBehaviour
 
     private void Start()
     {
-        startPos = transform.position; // Establish the default starting position
-        repeatWidth = GetComponent<BoxCollider>().size.x / 2; // Set repeat width to half of the background
+        repeatWidth = GetComponent<BoxCollider>().size.x / 2; // set to half the background width
+        startPos = transform.position; // set the default starting position
     }
 
     private void Update()
     {
-        transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime);
+        HandleScroll();
+    }
 
-        // If background moves left by its repeat width, move it back to start position
-        if (transform.position.x < startPos.x - repeatWidth)
+    /// <summary>
+    /// Moves the background left at constant speed while game is active, resetting to its
+    /// start position when halfway scrolled to give the illusion of an infinite background
+    /// </summary>
+    private void HandleScroll()
+    {
+        // If game is not over, continue background scroll
+        if (!GameManager.IsGameOver)
         {
-            transform.position = startPos;
+            transform.Translate(Vector3.left * scrollSpeed * Time.deltaTime); // constant scrolling
+
+            // If background moves left by its repeat width, move it back to start position
+            if (transform.position.x < startPos.x - repeatWidth)
+            {
+                transform.position = startPos;
+            }
         }
     }
 }
