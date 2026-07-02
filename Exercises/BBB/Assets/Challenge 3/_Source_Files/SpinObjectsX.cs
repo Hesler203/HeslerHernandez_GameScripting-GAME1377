@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpinObjectsX : MonoBehaviour
 {
@@ -9,6 +7,6 @@ public class SpinObjectsX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up, spinSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.up * spinSpeed * Time.deltaTime, Space.Self); // constant rotation
     }
 }
