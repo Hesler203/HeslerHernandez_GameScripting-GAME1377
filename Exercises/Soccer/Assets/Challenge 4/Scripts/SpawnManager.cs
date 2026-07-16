@@ -10,10 +10,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float spawnRangeX = 10;
     [SerializeField] private float spawnZMin = 15;
     [SerializeField] private float spawnZMax = 25;
+    [SerializeField] private Vector3 powerupSpawnOffset = new Vector3(0, 0, -15);
 
     [Header("Counters")]
     [SerializeField] private int waveCount = 1;
     [SerializeField] private int enemyCount = 0;
+    [SerializeField] private int powerupCount = 0;
 
     [Header("Player-related References")]
     [SerializeField] public GameObject player;
@@ -26,6 +28,10 @@ public class SpawnManager : MonoBehaviour
         {
             SpawnEnemyWave();
 
+
+        if (powerupCount == 0)
+        {
+            SpawnPowerUp();
         }
     }
 
@@ -46,6 +52,13 @@ public class SpawnManager : MonoBehaviour
         waveCount++;
     }
 
+    private void SpawnPowerUp()
+    {
+        GameObject spawnedPowerup = Instantiate(powerupPrefab, GenerateSpawnPosition()
+                                                + powerupSpawnOffset, powerupPrefab.transform.rotation);
+        powerupCount++;
+    }
+
     /// <summary>
     /// Generates & returns a random position within the spawn range bounds at which to spawn at.
     /// </summary>
@@ -63,5 +76,13 @@ public class SpawnManager : MonoBehaviour
     public void DecreaseEnemyCount()
     {
         enemyCount--;
+    }
+    
+    /// <summary>
+    /// Decrements the current powerup count by 1.
+    /// </summary>
+    public void DecreasePowerupCount()
+    {
+        powerupCount--;
     }
 }
