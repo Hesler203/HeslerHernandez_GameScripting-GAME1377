@@ -4,6 +4,13 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Power Up")]
+    [SerializeField] private SpawnManager spawnManager;
+    [SerializeField] private GameObject powerupIndicator;
+    [SerializeField] private Vector3 powerUpOffset = new Vector3(0, -0.6f, 0);
+    [SerializeField] private bool hasPowerup;
+    [SerializeField] private int powerUpDuration = 5;
+    [SerializeField] private float powerupStrength = 25;
     [SerializeField] private float normalStrength = 10;
 
     [Header("Movement")]
@@ -42,6 +49,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        powerupIndicator.transform.position = transform.position + powerUpOffset;
         moveDirection = focalPoint.forward;
         depthInput = moveAction.ReadValue<Vector2>().y;
     }
@@ -53,6 +61,47 @@ public class PlayerController : MonoBehaviour
             playerRb.AddForce(moveDirection * depthInput * speed, ForceMode.Acceleration);
         }
 
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Powerup"))
+        {
+            Destroy(other.gameObject);
+            spawnManager.DecreasePowerupCount();
+
+            ActivatePowerup();
+            StartCoroutine(nameof(PowerupCooldown));
+        }
+    }
+
+    /// <summary>
+    /// Enables the powerup Indicator object & sets hasPowerup to true.
+    /// </summary>
+    private void ActivatePowerup()
+    {
+        powerupIndicator.SetActive(true);
+        hasPowerup = true;
+    }
+
+    /// <summary>
+    /// Starts a cooldown timer which after ending deactivates the powerup & stops the corroutine.
+    /// </summary>
+    /// <returns>A float time to yield the corroutine call</returns>
+    IEnumerator PowerupCooldown()
+    {
+        yield return new WaitForSeconds(powerUpDuration);
+        DeactivatePowerup();
+        StopCoroutine(nameof(PowerupCooldown));
+    }
+
+    /// <summary>
+    /// Disables the powerup Indicator object & sets hasPowerup to false.
+    /// </summary>
+    private void DeactivatePowerup()
+    {
+        hasPowerup = false;
+        powerupIndicator.SetActive(false);
+    }
 
     public void ResetPlayer()
     {
@@ -68,7 +117,15 @@ public class PlayerController : MonoBehaviour
         {
             Rigidbody enemyRb = other.gameObject.GetComponent<Rigidbody>();
             Vector3 awayDirection = -other.gameObject.GetComponent<Enemy>().playerDirection;
+
+            if (hasPowerup)
+            {
+                enemyRb.AddForce(awayDirection * powerupStrength, ForceMode.Impulse);
+            }
+            else
+            {
                 enemyRb.AddForce(awayDirection * normalStrength, ForceMode.Impulse);
+            }
         }
     }
 }
