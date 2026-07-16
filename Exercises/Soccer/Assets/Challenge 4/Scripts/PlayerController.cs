@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float normalStrength = 10;
+
     [Header("Movement")]
     [SerializeField] private Transform focalPoint;
     [SerializeField] private InputActionAsset inputActions;
@@ -48,6 +50,15 @@ public class PlayerController : MonoBehaviour
         if (depthInput > moveDeadzone || depthInput < -moveDeadzone)
         {
             playerRb.AddForce(moveDirection * depthInput * speed, ForceMode.Acceleration);
+        }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Rigidbody enemyRb = other.gameObject.GetComponent<Rigidbody>();
+            Vector3 awayDirection = -other.gameObject.GetComponent<Enemy>().playerDirection;
+                enemyRb.AddForce(awayDirection * normalStrength, ForceMode.Impulse);
         }
     }
 }
