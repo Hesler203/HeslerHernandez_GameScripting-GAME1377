@@ -560,7 +560,7 @@ MonoBehaviour:
   powerupIndicator: {fileID: 1427939658}
   powerUpOffset: {x: 0, y: -0.6, z: 0}
   hasPowerup: 0
-  powerUpDuration: 7
+  powerUpDuration: 5
   powerupStrength: 25
   normalStrength: 10
   focalPoint: {fileID: 1170353596}
