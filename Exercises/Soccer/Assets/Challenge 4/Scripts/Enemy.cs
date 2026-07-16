@@ -55,5 +55,10 @@ public class Enemy : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.name == "Enemy Goal" || other.gameObject.name == "Player Goal")
+        {
+            spawnManager.DecreaseEnemyCount();
+            Destroy(gameObject);
+        }
     }
 }

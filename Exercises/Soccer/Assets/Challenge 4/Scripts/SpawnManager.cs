@@ -56,4 +56,12 @@ public class SpawnManager : MonoBehaviour
         float zPos = Random.Range(spawnZMin, spawnZMax);
         return new Vector3(xPos, 0, zPos);
     }
+
+    /// <summary>
+    /// Decrements the current enemy count by 1.
+    /// </summary>
+    public void DecreaseEnemyCount()
+    {
+        enemyCount--;
+    }
 }
