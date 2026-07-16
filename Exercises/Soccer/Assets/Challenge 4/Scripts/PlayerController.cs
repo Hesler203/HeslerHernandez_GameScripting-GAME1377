@@ -21,8 +21,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 3;
     private Rigidbody playerRb;
     private InputAction moveAction;
+    private InputAction boostAction;
     private float depthInput;
     private Vector3 moveDirection;
+
+    [Header("Smoke Effect")]
+    [SerializeField] private ParticleSystem smokeParticles;
+    [SerializeField] private Vector3 smokeOffset = new Vector3(0, -0.6f, 0.5f);
 
     void Awake()
     {
@@ -50,6 +55,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         powerupIndicator.transform.position = transform.position + powerUpOffset;
+        smokeParticles.transform.position = transform.position + smokeOffset;
+
         moveDirection = focalPoint.forward;
         depthInput = moveAction.ReadValue<Vector2>().y;
     }
@@ -61,6 +68,16 @@ public class PlayerController : MonoBehaviour
             playerRb.AddForce(moveDirection * depthInput * speed, ForceMode.Acceleration);
         }
 
+        if (boostAction.IsPressed())
+        {
+            playerRb.AddForce(moveDirection * depthInput, ForceMode.VelocityChange);
+            smokeParticles.Play();
+        }
+        else
+        {
+            smokeParticles.Stop();
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
