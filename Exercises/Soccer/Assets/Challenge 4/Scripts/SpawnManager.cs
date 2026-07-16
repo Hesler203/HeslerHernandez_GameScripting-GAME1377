@@ -46,16 +46,21 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < waveCount; i++)
         {
             GameObject spawnedEnemy = Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
+            spawnedEnemy.transform.SetParent(this.transform);
             spawnedEnemy.GetComponent<Enemy>().SetSpawnerRef(this);
             enemyCount++;
         }
         waveCount++;
     }
 
+    /// <summary>
+    /// Spawns a powerup as a child of the spawn manager before increasing the current power up count.
+    /// </summary>
     private void SpawnPowerUp()
     {
         GameObject spawnedPowerup = Instantiate(powerupPrefab, GenerateSpawnPosition()
                                                 + powerupSpawnOffset, powerupPrefab.transform.rotation);
+        spawnedPowerup.transform.SetParent(this.transform);
         powerupCount++;
     }
 
