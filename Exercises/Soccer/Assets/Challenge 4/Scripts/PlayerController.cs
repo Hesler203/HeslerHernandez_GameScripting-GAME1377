@@ -120,12 +120,18 @@ public class PlayerController : MonoBehaviour
         powerupIndicator.SetActive(false);
     }
 
+    /// <summary>
+    /// Hides all vfx & resets player related stats for a new wave of enemy spawns.
+    /// </summary>
     public void ResetPlayer()
     {
         transform.position = startingPosition;
         playerRb.linearVelocity = Vector3.zero;
         playerRb.angularVelocity = Vector3.zero;
         focalPoint.GetComponent<RotateCamera>().ResetCamera();
+
+        DeactivatePowerup();
+        smokeParticles.Stop();
     }
 
     void OnCollisionEnter(Collision other)
