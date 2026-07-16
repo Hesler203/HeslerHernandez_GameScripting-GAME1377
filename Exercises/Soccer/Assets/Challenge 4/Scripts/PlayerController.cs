@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private Transform focalPoint;
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private Vector3 startingPosition = new Vector3(0, 1, -7);
     [SerializeField] private float moveDeadzone = 0.001f;
     [SerializeField] private float speed = 3;
     private Rigidbody playerRb;
@@ -51,6 +52,15 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.AddForce(moveDirection * depthInput * speed, ForceMode.Acceleration);
         }
+
+
+    public void ResetPlayer()
+    {
+        transform.position = startingPosition;
+        playerRb.linearVelocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+        focalPoint.GetComponent<RotateCamera>().ResetCamera();
+    }
 
     void OnCollisionEnter(Collision other)
     {

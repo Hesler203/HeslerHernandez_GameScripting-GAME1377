@@ -28,6 +28,8 @@ public class SpawnManager : MonoBehaviour
         {
             SpawnEnemyWave();
 
+            player.GetComponent<PlayerController>().ResetPlayer();
+        }
 
         if (powerupCount == 0)
         {
