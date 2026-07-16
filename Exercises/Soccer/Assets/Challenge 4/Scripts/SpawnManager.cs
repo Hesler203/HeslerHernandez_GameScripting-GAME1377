@@ -50,6 +50,7 @@ public class SpawnManager : MonoBehaviour
             GameObject spawnedEnemy = Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
             spawnedEnemy.transform.SetParent(this.transform);
             spawnedEnemy.GetComponent<Enemy>().SetSpawnerRef(this);
+            spawnedEnemy.GetComponent<Enemy>().speed += (waveCount - 1);
             enemyCount++;
         }
         waveCount++;
