@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Dog
   - Ground
+  - Powerup
+  - Enemy
   layers:
   - Default
   - TransparentFX
