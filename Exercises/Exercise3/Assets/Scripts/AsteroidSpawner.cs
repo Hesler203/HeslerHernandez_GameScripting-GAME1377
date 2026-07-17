@@ -42,7 +42,7 @@ public class AsteroidSpawner : MonoBehaviour
                 SetRandomSpawnLocation();
             } while (spawnDistance < playerSafeDistance);
 
-            SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large, initalSpawnAmount / initalSpawnAmount);
+            SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
         }
     }
 
@@ -67,18 +67,11 @@ public class AsteroidSpawner : MonoBehaviour
     /// <param name="size">The enum asteroid size that determines which asteroid prefab to spawn.</param>
     /// <param name="spawnAmount">The number of asteroids to spawn.</param>
     ///
-    public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size, int spawnAmount)
+    public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size, int spawnAmount = 1)
     {
         for (int i = 0; i < spawnAmount; i++)
         {
-            GameObject asteroidToSpawn = null;
-            foreach (GameObject asteroidPrefab in asteroidPrefabs)
-            {
-                if (asteroidPrefab.GetComponent<Asteroid>().size == size)
-                {
-                    asteroidToSpawn = asteroidPrefab;
-                }
-            }
+            GameObject asteroidToSpawn = asteroidPrefabs[(int)size];
 
             if (asteroidToSpawn != null)
             {
