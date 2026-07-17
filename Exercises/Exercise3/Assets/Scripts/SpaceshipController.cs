@@ -1,17 +1,20 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class AsteroidsPlayerController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform firePoint;
+    [Header("References")]
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    private Rigidbody2D rb;
 
-    [SerializeField] private float rotationSpeed = 250f;
+    [Header("Settings")]
+    [SerializeField] private float thrustDeadZone = .01f;
+    [SerializeField] private float rotationDeadZone = .01f;
     [SerializeField] private float thrustForce = 5f;
-    private float rotationInput;
+    [SerializeField] private float rotationSpeed = 250f;
     private float thrustInput;
-    [SerializeField] private float deadZone = .01f;
-
+    private float rotationInput;
 
     void Start()
     {
@@ -28,36 +31,35 @@ public class AsteroidsPlayerController : MonoBehaviour
         HandleHyperspace();
     }
 
-
     void FixedUpdate()
     {
         HandleThrust();
     }
 
     /// <summary>
-    /// Rotates the player with constant rotation speed along the world-space z-axis using the rotationInput
+    /// Rotates the player with constant rotation speed along the world-space z-axis using the rotationInput.
     /// </summary>
     private void HandleRotation()
     {
-        if (rotationInput > deadZone || rotationInput < deadZone)
+        if (rotationInput > thrustDeadZone || rotationInput < thrustDeadZone)
         {
-            transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.back * rotationInput * rotationSpeed * Time.deltaTime, Space.World);
         }
     }
 
     /// <summary>
-    /// Applies a forward accelaration to the player in local space using the thrustInput & thrustForce multipliers
+    /// Applies a forward accelaration to the player in local space using the thrustInput & thrustForce multipliers.
     /// </summary>
     private void HandleThrust()
     {
-        if (thrustInput > deadZone)
+        if (thrustInput > rotationDeadZone)
         {
-            rb.AddRelativeForce(Vector3.up * thrustInput * thrustForce, ForceMode2D.Force);
+            rb.AddForce(transform.up * thrustInput * thrustForce, ForceMode2D.Force);
         }
     }
 
     /// <summary>
-    /// Checks for Spacebar input before firing a bullet
+    /// Checks for Spacebar input before firing a bullet.
     /// </summary>
     private void HandleFire()
     {
@@ -68,7 +70,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a bullet from the player's firePoint location
+    /// Spawns a bullet from the player's firePoint location.
     /// </summary>
     private void FireBullet()
     {
@@ -77,11 +79,11 @@ public class AsteroidsPlayerController : MonoBehaviour
             Debug.LogWarning("Bullet prefab not assigned!");
             return;
         }
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
     /// <summary>
-    /// Checks for shift-key input before warping the player to a random location within bounds
+    /// Checks for shift-key input before warping the player to a random location within bounds.
     /// </summary>
     private void HandleHyperspace()
     {
@@ -92,7 +94,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the player's position to a random location within screen bounds
+    /// Sets the player's position to a random location within screen bounds.
     /// </summary>
     private void WarpToRandomLocation()
     {
@@ -100,6 +102,7 @@ public class AsteroidsPlayerController : MonoBehaviour
         float randomYInBounds = Random.Range(ScreenBounds.ScreenBottom, ScreenBounds.ScreenTop);
         transform.position = new Vector3(randomXInBounds, randomYInBounds);
     }
+
     void OnDestroy()
     {
         Debug.Log("Game Over");
