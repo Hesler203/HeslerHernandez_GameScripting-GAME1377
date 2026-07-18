@@ -1132,7 +1132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 583048338}
   inputActions: {fileID: -944628639613478452, guid: aeadfbac9dc579f4d810e28bcee174fd, type: 3}
-  lookSpeed: 100
+  lookSpeed: 20
 --- !u!4 &1170353596
 Transform:
   m_ObjectHideFlags: 0

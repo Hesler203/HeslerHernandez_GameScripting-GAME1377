@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class RotateCamera : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class RotateCamera : MonoBehaviour
 
     void Update()
     {
-        float horizontalInput = lookAction.ReadValue<Vector2>().x;
+        float horizontalInput = lookAction.ReadValue<float>();
         transform.Rotate(Vector3.up * horizontalInput * lookSpeed * Time.deltaTime);
 
         transform.position = player.transform.position;

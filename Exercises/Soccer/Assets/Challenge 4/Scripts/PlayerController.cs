@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private InputAction boostAction;
     private float depthInput;
     private Vector3 moveDirection;
+    private bool boostPressed = false;
 
     [Header("Smoke Effect")]
     [SerializeField] private ParticleSystem smokeParticles;
@@ -58,7 +59,18 @@ public class PlayerController : MonoBehaviour
         smokeParticles.transform.position = transform.position + smokeOffset;
 
         moveDirection = focalPoint.forward;
-        depthInput = moveAction.ReadValue<Vector2>().y;
+        depthInput = moveAction.ReadValue<float>();
+
+        if (boostAction.IsPressed())
+        {
+            boostPressed = true;
+            smokeParticles.Play();
+        }
+        else
+        {
+            boostPressed = false;
+            smokeParticles.Stop();
+        }
     }
 
     void FixedUpdate()
@@ -68,14 +80,9 @@ public class PlayerController : MonoBehaviour
             playerRb.AddForce(moveDirection * depthInput * speed, ForceMode.Acceleration);
         }
 
-        if (boostAction.IsPressed())
+        if (boostPressed)
         {
             playerRb.AddForce(moveDirection * depthInput, ForceMode.VelocityChange);
-            smokeParticles.Play();
-        }
-        else
-        {
-            smokeParticles.Stop();
         }
     }
 
