@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             Rigidbody enemyRb = other.gameObject.GetComponent<Rigidbody>();
-            Vector3 awayDirection = -other.gameObject.GetComponent<Enemy>().playerDirection;
+            Vector3 awayDirection = -other.gameObject.GetComponent<Enemy>().PlayerDirection;
 
             if (hasPowerup)
             {

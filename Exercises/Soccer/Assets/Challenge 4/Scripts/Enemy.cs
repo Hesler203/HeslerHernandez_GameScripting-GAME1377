@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour
     [Header("Movement")]
     [SerializeField] public float speed;
     private Vector3 playerGoalDirection;
-    public Vector3 playerDirection;
+    public Vector3 PlayerDirection;
 
     private Rigidbody enemyRb;
     private SpawnManager spawnManager;
@@ -26,8 +26,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        playerGoalDirection = GetDirectionToTarget(spawnManager.playerGoal);
-        playerDirection = GetDirectionToTarget(spawnManager.player.transform);
+        playerGoalDirection = GetDirectionToTarget(spawnManager.PlayerGoal);
+        PlayerDirection = GetDirectionToTarget(spawnManager.Player.transform);
     }
 
     void FixedUpdate()

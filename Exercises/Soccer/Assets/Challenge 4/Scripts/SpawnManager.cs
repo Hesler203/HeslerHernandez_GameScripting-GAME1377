@@ -18,9 +18,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int powerupCount = 0;
 
     [Header("Player-related References")]
-    [SerializeField] public GameObject player;
+    [SerializeField] public GameObject Player;
     [SerializeField] private GameObject focalPoint;
-    [SerializeField] public Transform playerGoal;
+    [SerializeField] public Transform PlayerGoal;
 
     void Update()
     {
@@ -28,7 +28,7 @@ public class SpawnManager : MonoBehaviour
         {
             SpawnEnemyWave();
 
-            player.GetComponent<PlayerController>().ResetPlayer();
+            Player.GetComponent<PlayerController>().ResetPlayer();
         }
 
         if (powerupCount == 0)
@@ -85,7 +85,7 @@ public class SpawnManager : MonoBehaviour
     {
         enemyCount--;
     }
-    
+
     /// <summary>
     /// Decrements the current powerup count by 1.
     /// </summary>
