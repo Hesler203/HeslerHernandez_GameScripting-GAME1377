@@ -17,12 +17,12 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, bulletLifetime);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.collider.CompareTag("Asteroid"))
+        if (collider.CompareTag("Asteroid"))
         {
-            collision.collider.GetComponent<Asteroid>().BreakAsteroid();
-            
+            collider.GetComponent<Asteroid>().BreakAsteroid();
+
             Destroy(gameObject);
         }
     }

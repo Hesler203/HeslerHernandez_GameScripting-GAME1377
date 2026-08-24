@@ -8,24 +8,24 @@ public class AsteroidSpawner : MonoBehaviour
     private float spawnXMin = 0f;
     private float spawnYMax = 0f;
     private float spawnYMin = 0f;
-    private float playerSafeDistance = 3f;
     private Vector3 randomSpawnLocation;
     private float spawnDistance;
 
     [Header("Settings")]
     [SerializeField] private GameObject[] asteroidPrefabs;
     [SerializeField] private int initalSpawnAmount = 5;
-    [SerializeField] public int childSpawnAmount = 2;
+    [SerializeField] public int ChildSpawnAmount = 2;
+    [SerializeField] public float PlayerSafeDistance = 3f;
 
     void Start()
     {
         float screenHalfHeight = Camera.main.orthographicSize;
         float screenHalfWidth = Camera.main.aspect * screenHalfHeight;
 
-        spawnXMax = screenHalfWidth + playerSafeDistance;
-        spawnXMin = -screenHalfWidth - playerSafeDistance;
-        spawnYMax = screenHalfHeight + playerSafeDistance;
-        spawnYMin = -screenHalfHeight - playerSafeDistance;
+        spawnXMax = screenHalfWidth + PlayerSafeDistance;
+        spawnXMin = -screenHalfWidth - PlayerSafeDistance;
+        spawnYMax = screenHalfHeight + PlayerSafeDistance;
+        spawnYMin = -screenHalfHeight - PlayerSafeDistance;
 
         SpawnInitialAsteroids();
     }
@@ -40,7 +40,7 @@ public class AsteroidSpawner : MonoBehaviour
             do
             {
                 SetRandomSpawnLocation();
-            } while (spawnDistance < playerSafeDistance);
+            } while (spawnDistance < PlayerSafeDistance);
 
             SpawnAsteroid(randomSpawnLocation, Asteroid.AsteroidSize.Large);
         }
@@ -65,24 +65,16 @@ public class AsteroidSpawner : MonoBehaviour
     /// </summary>
     /// <param name="position">Vector3 position to spawn at.</param>
     /// <param name="size">The enum asteroid size that determines which asteroid prefab to spawn.</param>
-    /// <param name="spawnAmount">The number of asteroids to spawn.</param>
     ///
-    public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size, int spawnAmount = 1)
+    public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        for (int i = 0; i < spawnAmount; i++)
-        {
-            GameObject asteroidToSpawn = asteroidPrefabs[(int)size];
+        GameObject asteroidToSpawn = asteroidPrefabs[(int)size];
 
-            if (asteroidToSpawn != null)
-            {
-                GameObject spawnedAsteroid  = Instantiate(asteroidToSpawn, position, asteroidToSpawn.transform.rotation);
-                spawnedAsteroid.GetComponent<Asteroid>().InitializeSpawnerRef(this);
-                spawnedAsteroid.transform.parent = transform;
-            }
-            else
-            {
-                return;
-            }
+        if (asteroidToSpawn != null)
+        {
+            GameObject spawnedAsteroid = Instantiate(asteroidToSpawn, position, asteroidToSpawn.transform.rotation);
+            spawnedAsteroid.GetComponent<Asteroid>().InitializeSpawnerRef(this);
+            spawnedAsteroid.transform.parent = transform;
         }
     }
 }

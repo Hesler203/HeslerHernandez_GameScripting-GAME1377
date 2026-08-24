@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Asteroid : MonoBehaviour
 {
     private AsteroidSpawner spawner;
@@ -8,11 +9,16 @@ public class Asteroid : MonoBehaviour
     public enum AsteroidSize { Small, Medium, Large }
 
     [Header("Settings")]
-    [SerializeField] public AsteroidSize size;
+    [SerializeField] public AsteroidSize Size;
     [SerializeField] private float speed;
     [SerializeField] private float minRotationSpeed = -180f;
     [SerializeField] private float maxRotationSpeed = 180f;
     private Rigidbody2D rb;
+
+    [Header("Animation References")]
+    [SerializeField] private AnimationClip explodeAnimation;
+    private AudioManager audioManager;
+    private Animator animator;
 
     /// <summary>
     /// Sets the reference to the asteroid spawner object, to be called right after a new asteroid instance.
@@ -25,6 +31,8 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
+        audioManager = AudioManager.Instance;
+        animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
 
         float randomX = Random.Range(-Random.value, Random.value);
@@ -41,9 +49,17 @@ public class Asteroid : MonoBehaviour
     /// </summary>
     public void BreakAsteroid()
     {
-        SpawnChildren(size - 1);
+        gameObject.GetComponent<Collider2D>().enabled = false;
 
-        Destroy(this.gameObject);
+        animator.SetTrigger("explode");
+        audioManager.SFX.PlayOneShot(audioManager.SFXClips[1]);
+
+        if (Size > 0)
+        {
+            SpawnChildren(Size - 1);
+        }
+
+        Destroy(gameObject, explodeAnimation.length);
     }
 
     /// <summary>
@@ -53,14 +69,17 @@ public class Asteroid : MonoBehaviour
     /// <param name="childSize">The next smallest asteroid size to be spawned.</param>
     private void SpawnChildren(AsteroidSize childSize)
     {
-        spawner.SpawnAsteroid(transform.position, childSize, spawner.childSpawnAmount);
+        for (int i = 0; i < spawner.ChildSpawnAmount; i++)
+        {
+            spawner.SpawnAsteroid(transform.position, childSize);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Destroy(collision.collider.gameObject);
+            collision.gameObject.GetComponent<SpaceshipController>().SubtractLife();
         }
     }
 }

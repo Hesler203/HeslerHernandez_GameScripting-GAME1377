@@ -1,24 +1,41 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class AsteroidsPlayerController : MonoBehaviour
+[RequireComponent(typeof(PolygonCollider2D))]
+[RequireComponent(typeof(Animator))]
+public class SpaceshipController : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private AsteroidSpawner asteroidSpawner;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform warpLocation;
     private Rigidbody2D rb;
+    private PolygonCollider2D playerCollider;
+    private Animator animator;
+    private AudioManager audioManager;
 
     [Header("Settings")]
+    [SerializeField] public int Lives = 3;
+    [SerializeField] private bool didShoot = false;
+    [SerializeField] private bool isInvincible = false;
+    [SerializeField] private float shootCooldown = .2f;
     [SerializeField] private float thrustDeadZone = .01f;
     [SerializeField] private float rotationDeadZone = .01f;
     [SerializeField] private float thrustForce = 5f;
     [SerializeField] private float rotationSpeed = 250f;
     private float thrustInput;
     private float rotationInput;
+    private float timer = 0;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<PolygonCollider2D>();
+        animator = GetComponent<Animator>();
+        audioManager = AudioManager.Instance;
+        asteroidSpawner = FindAnyObjectByType<AsteroidSpawner>();
     }
 
     void Update()
@@ -52,9 +69,18 @@ public class AsteroidsPlayerController : MonoBehaviour
     /// </summary>
     private void HandleThrust()
     {
-        if (thrustInput > rotationDeadZone)
+        if (thrustInput > rotationDeadZone && !animator.GetBool("didCrash"))
         {
             rb.AddForce(transform.up * thrustInput * thrustForce, ForceMode2D.Force);
+            if (!animator.GetBool("isThrust"))
+            {
+                animator.SetBool("isThrust", true);
+                audioManager.SFX.PlayOneShot(audioManager.SFXClips[2]);
+            }
+        }
+        else
+        {
+            animator.SetBool("isThrust", false);
         }
     }
 
@@ -63,10 +89,29 @@ public class AsteroidsPlayerController : MonoBehaviour
     /// </summary>
     private void HandleFire()
     {
-        if (Input.GetButtonDown("Shoot"))
+        if (isInvincible)
+        {
+            return;
+        }
+
+        if (Input.GetButtonDown("Shoot") && !didShoot)
         {
             FireBullet();
+            audioManager.SFX.PlayOneShot(audioManager.SFXClips[3]);
+            didShoot = true;
+            timer = shootCooldown;
         }
+
+        if (didShoot)
+        {
+            while (timer > 0f)
+            {
+                timer -= Time.deltaTime;
+                return;
+            }
+            timer = 0;
+        }
+        didShoot = false;
     }
 
     /// <summary>
@@ -89,23 +134,64 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Warp"))
         {
-            WarpToRandomLocation();
+            audioManager.SFX.PlayOneShot(audioManager.SFXClips[4]);
+            animator.SetBool("isWarp", true);
         }
     }
 
-    /// <summary>
-    /// Sets the player's position to a random location within screen bounds.
-    /// </summary>
-    private void WarpToRandomLocation()
+    private void WarpToSafeLocation()
     {
-        float randomXInBounds = Random.Range(ScreenBounds.ScreenLeft, ScreenBounds.ScreenRight);
-        float randomYInBounds = Random.Range(ScreenBounds.ScreenBottom, ScreenBounds.ScreenTop);
-        transform.position = new Vector3(randomXInBounds, randomYInBounds);
+        audioManager.SFX.PlayOneShot(audioManager.SFXClips[4]);
+        transform.position = warpLocation.position;
     }
 
-    void OnDestroy()
+    public void SubtractLife()
     {
-        Debug.Log("Game Over");
-        Debug.Break();
+        Lives--;
+
+        if (Lives == 0)
+        {
+            Debug.Log("Game Over");
+            Debug.Break();
+        }
+        else
+        {
+            PlayerDeath();
+        }
+    }
+
+    private void PlayerDeath()
+    {
+        animator.SetBool("didCrash", true);
+        audioManager.SFX.PlayOneShot(audioManager.SFXClips[5]);
+
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        isInvincible = true;
+        playerCollider.enabled = false;
+    }
+
+    private void ResetPlayer()
+    {
+        transform.position = Vector3.zero;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+    }
+
+    public void EndInvincibility()
+    {
+        isInvincible = false;
+        playerCollider.enabled = true;
+    }
+
+    public void DisableAnimationBool(string boolName)
+    {
+        animator.SetBool(boolName, false);
+    }
+
+    public void EnableAnimationBool(string boolName)
+    {
+        animator.SetBool(boolName, true);
     }
 }
